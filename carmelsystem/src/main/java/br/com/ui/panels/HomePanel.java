@@ -15,10 +15,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Painel Inicial — Dashboard com rankings do mês.
- * Delegado ao RelatorioService.
- */
 public class HomePanel extends JPanel {
 
     private final ServiceLocator services;
@@ -85,7 +81,7 @@ public class HomePanel extends JPanel {
     }
 
     private void build() {
-        // Topo
+        
         JPanel topo = new JPanel(new BorderLayout());
         topo.setOpaque(false);
         topo.setBorder(new EmptyBorder(10, 12, 6, 12));
@@ -98,7 +94,7 @@ public class HomePanel extends JPanel {
         topo.add(btnAtualizar, BorderLayout.EAST);
         add(topo, BorderLayout.NORTH);
 
-        // Rankings
+        
         JPanel rankings = new JPanel(new GridLayout(1, 2, 10, 0));
         rankings.setOpaque(false);
         rankings.setBorder(new EmptyBorder(0, 10, 10, 10));

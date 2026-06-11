@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Cliente Pessoa Jurídica (empresa que compra).
- * Diferente de Fornecedor — este é cliente, não vendedor.
- */
 @Getter @Setter
 @Entity
 @Table(name = "cliente_juridico")
@@ -35,7 +31,7 @@ public class ClienteJuridico {
     private String email;
 
     @Column(length = 100)
-    private String contato; // nome do responsável
+    private String contato; 
 
     @Column(length = 10)
     private String cep;

@@ -20,10 +20,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Painel de Notas de Transferência (Entrada/Saída de Estoque).
- * Delegado ao EstoqueService.
- */
 public class NotaTransferenciaPanel extends JPanel {
 
     private final ServiceLocator services;
@@ -31,7 +27,7 @@ public class NotaTransferenciaPanel extends JPanel {
     private static final DateTimeFormatter FMT     = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private static final DateTimeFormatter FMT_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // ── Aba Emitir ─────────────────────────────────────────────────────────────
+    
     private JComboBox<String>     cbTipo;
     private JComboBox<Fornecedor> cbFornecedor;
     private JTextField            tfNumeroNota;
@@ -42,7 +38,7 @@ public class NotaTransferenciaPanel extends JPanel {
     private JList<EstoqueService.ItemNotaDTO> lstItens;
     private List<Produto> produtosList = new ArrayList<>();
 
-    // ── Aba Consulta ───────────────────────────────────────────────────────────
+    
     private JComboBox<String> cbFiltroTipo;
     private JTextField        tfFiltroDe, tfFiltroAte;
     private DefaultTableModel notasModel;
@@ -65,7 +61,7 @@ public class NotaTransferenciaPanel extends JPanel {
         produtosList.forEach(cbProduto::addItem);
     }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Notas de Transferência — Entrada / Saída de Estoque"), BorderLayout.NORTH);
@@ -77,7 +73,7 @@ public class NotaTransferenciaPanel extends JPanel {
         add(tabs, BorderLayout.CENTER);
     }
 
-    // ── Aba: Emitir Nota (original, sem alteração) ────────────────────────────
+    
 
     private JPanel buildEmitirPanel() {
         JPanel p = new JPanel(new BorderLayout(8, 0));
@@ -176,14 +172,14 @@ public class NotaTransferenciaPanel extends JPanel {
         return p;
     }
 
-    // ── Aba: Consultar Notas ──────────────────────────────────────────────────
+    
 
     private JPanel buildConsultaPanel() {
         JPanel p = new JPanel(new BorderLayout(0, 6));
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        // Filtros
+        
         JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
         filtros.setBackground(UIFactory.XP_PANEL_BG);
         filtros.setBorder(UIFactory.groupBorder("Filtros"));
@@ -216,7 +212,7 @@ public class NotaTransferenciaPanel extends JPanel {
         filtros.add(btnBuscar); filtros.add(btnLimpar);
         p.add(filtros, BorderLayout.NORTH);
 
-        // Tabela de notas
+        
         notasModel = new DefaultTableModel(
                 new String[]{"ID", "Tipo", "Data", "Nº Referência", "Fornecedor", "Qtd Itens", "Total (R$)"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -251,7 +247,7 @@ public class NotaTransferenciaPanel extends JPanel {
             return cell;
         });
 
-        // Duplo clique abre detalhes
+        
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2 && tabela.getSelectedRow() >= 0) {
@@ -266,7 +262,7 @@ public class NotaTransferenciaPanel extends JPanel {
         scroll.setBorder(BorderFactory.createLineBorder(new Color(172, 168, 153)));
         p.add(scroll, BorderLayout.CENTER);
 
-        // Rodapé
+        
         JPanel rod = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
         rod.setBackground(new Color(212, 208, 200));
         rod.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(172, 168, 153)));
@@ -290,20 +286,20 @@ public class NotaTransferenciaPanel extends JPanel {
         return p;
     }
 
-    // ── Lógica de consulta ────────────────────────────────────────────────────
+    
 
     private void buscarNotas() {
         if (notasModel == null) return;
         notasModel.setRowCount(0);
         notasCarregadas.clear();
 
-        // Tipo
+        
         TipoNota tipo = null;
         String tipoSel = (String) cbFiltroTipo.getSelectedItem();
         if ("ENTRADA".equals(tipoSel)) tipo = TipoNota.ENTRADA;
         else if ("SAÍDA".equals(tipoSel)) tipo = TipoNota.SAIDA;
 
-        // Período
+        
         LocalDateTime de = null, ate = null;
         try {
             if (!Validator.isBlank(tfFiltroDe.getText()))
@@ -348,7 +344,7 @@ public class NotaTransferenciaPanel extends JPanel {
         dlg.setSize(600, 440); dlg.setLocationRelativeTo(this);
         dlg.setLayout(new BorderLayout());
 
-        // Cabeçalho
+        
         JPanel header = new JPanel(new GridLayout(0, 2, 4, 2));
         header.setBackground(UIFactory.XP_BG);
         header.setBorder(UIFactory.groupBorder("Dados da Nota"));
@@ -366,7 +362,7 @@ public class NotaTransferenciaPanel extends JPanel {
         addDetalhe(header, "Total:",         String.format("R$ %.2f", total));
         dlg.add(header, BorderLayout.NORTH);
 
-        // Tabela de itens
+        
         DefaultTableModel itensTabModel = new DefaultTableModel(
                 new String[]{"Produto", "Quantidade", "Preço Unit. (R$)", "Subtotal (R$)"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -406,7 +402,7 @@ public class NotaTransferenciaPanel extends JPanel {
         itensPanel.add(scrollItens, BorderLayout.CENTER);
         dlg.add(itensPanel, BorderLayout.CENTER);
 
-        // Rodapé
+        
         JPanel rod = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
         rod.setBackground(UIFactory.XP_BG);
         rod.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(172, 168, 153)));
@@ -425,7 +421,7 @@ public class NotaTransferenciaPanel extends JPanel {
         p.add(lbl); p.add(val);
     }
 
-    // ── Ações da aba Emitir (original) ────────────────────────────────────────
+    
 
     private void adicionarItem() {
         Produto prod = (Produto) cbProduto.getSelectedItem();

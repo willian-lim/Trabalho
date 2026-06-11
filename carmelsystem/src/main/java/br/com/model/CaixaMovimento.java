@@ -8,11 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Movimento de caixa.
- * Cada abertura gera um número sequencial de caixa (numeroCaixa).
- * Todos os movimentos do mesmo turno compartilham o mesmo numeroCaixa.
- */
 @Getter
 @Setter
 @Entity
@@ -23,10 +18,7 @@ public class CaixaMovimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Número sequencial do caixa (Caixa 1, Caixa 2, ...).
-     * Gerado na abertura e herdado por todos os movimentos do turno.
-     */
+    
     @Column(name = "numero_caixa")
     private Long numeroCaixa;
 
@@ -46,7 +38,7 @@ public class CaixaMovimento {
     @Column(name = "descricao", length = 300)
     private String descricao;
 
-    // Referência opcional ao pagamento que gerou o movimento (para vendas)
+    
     @ManyToOne
     @JoinColumn(name = "pagamento_id")
     private Pagamento pagamento;

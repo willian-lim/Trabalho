@@ -18,11 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Painel de Caixa.
- * O caixa é identificado por número sequencial (Caixa #N),
- * não mais por data ou turno.
- */
 public class CaixaPanel extends JPanel {
 
     private final ServiceLocator services;
@@ -30,17 +25,17 @@ public class CaixaPanel extends JPanel {
     private static final DateTimeFormatter FMT     = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private static final DateTimeFormatter FMT_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // Estado (calculado pelo serviço)
+    
     private CaixaService.EstadoCaixa estadoAtual;
 
-    // Componentes de status
+    
     private JLabel lblStatus, lblSaldo, lblCaixaNum;
     private JButton btnAbrirCaixa, btnFecharCaixa, btnSangria, btnSuprimento, btnVerFechamento;
 
-    // Tabelas
+    
     private DefaultTableModel movModel, resumoModel, fechadosModel;
 
-    // Filtros fechados
+    
     private JTextField tfFiltroDe, tfFiltroAte;
 
     public CaixaPanel(ServiceLocator services) {
@@ -62,7 +57,7 @@ public class CaixaPanel extends JPanel {
         reloadCaixasFechados();
     }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Caixa"), BorderLayout.NORTH);
@@ -206,7 +201,7 @@ public class CaixaPanel extends JPanel {
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        // Filtros por número de caixa
+        
         JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
         filtros.setBackground(UIFactory.XP_PANEL_BG);
         filtros.setBorder(UIFactory.groupBorder("Pesquisar Caixas Fechados"));
@@ -231,11 +226,11 @@ public class CaixaPanel extends JPanel {
 
         JTable t = UIFactory.styledTable();
         t.setModel(fechadosModel);
-        t.getColumnModel().getColumn(0).setPreferredWidth(65);   // Caixa #
-        t.getColumnModel().getColumn(1).setPreferredWidth(120);  // Data Abertura
-        t.getColumnModel().getColumn(2).setPreferredWidth(120);  // Data Fechamento
+        t.getColumnModel().getColumn(0).setPreferredWidth(65);   
+        t.getColumnModel().getColumn(1).setPreferredWidth(120);  
+        t.getColumnModel().getColumn(2).setPreferredWidth(120);  
         for (int i = 3; i <= 9; i++) t.getColumnModel().getColumn(i).setPreferredWidth(100);
-        t.getColumnModel().getColumn(10).setPreferredWidth(90);  // Status
+        t.getColumnModel().getColumn(10).setPreferredWidth(90);  
 
         t.setDefaultRenderer(Object.class, (tbl, value, isSel, hasFocus, row, col) -> {
             JLabel cell = new JLabel(value != null ? value.toString() : "");
@@ -250,7 +245,7 @@ public class CaixaPanel extends JPanel {
                 cell.setBackground("✅ Correto".equals(st)   ? new Color(220, 255, 220)
                         : "⚠ Diferença".equals(st) ? new Color(255, 240, 200)
                         : (row % 2 == 0 ? Color.WHITE : new Color(248, 248, 252)));
-                cell.setForeground(col == 9  // coluna "Diferença (R$)" = índice 9
+                cell.setForeground(col == 9  
                         ? ("✅ Correto".equals(st) ? new Color(0, 110, 0) : new Color(160, 60, 0))
                         : Color.BLACK);
             }
@@ -300,7 +295,7 @@ public class CaixaPanel extends JPanel {
         return bar;
     }
 
-    // ── Ações — delegam ao CaixaService ──────────────────────────────────────
+    
 
     private void abrirCaixa() {
         String s = JOptionPane.showInputDialog(this, "Valor inicial do caixa (R$):", "Abrir Caixa", JOptionPane.QUESTION_MESSAGE);
@@ -391,7 +386,7 @@ public class CaixaPanel extends JPanel {
         } catch (RegraNegocioException e) { showError(e.getMessage()); }
     }
 
-    // ── Chamado pelo EmitirNotaPanel / PedidoPanel ────────────────────────────
+    
 
     public void registrarVenda(Pagamento pagamento) {
         try {
@@ -400,7 +395,7 @@ public class CaixaPanel extends JPanel {
         } catch (Exception ex) { ex.printStackTrace(); }
     }
 
-    // ── Atualização da UI ─────────────────────────────────────────────────────
+    
 
     private void atualizarStatus() {
         if (estadoAtual == null) return;
@@ -428,7 +423,7 @@ public class CaixaPanel extends JPanel {
         movModel.setRowCount(0);
         if (estadoAtual == null || estadoAtual.numeroCaixa == null) return;
 
-        // Mostra movimentos do caixa atual (aberto ou último fechado)
+        
         Long numAtual = estadoAtual.numeroCaixa;
         services.caixa().buscarMovimentosPorNumero(numAtual).forEach(m -> {
             String desc = m.getDescricao();
@@ -519,7 +514,7 @@ public class CaixaPanel extends JPanel {
         });
     }
 
-    // ── Relatório ─────────────────────────────────────────────────────────────
+    
 
     private void abrirRelatorioAtual() {
         if (estadoAtual == null || estadoAtual.numeroCaixa == null) return;
@@ -671,7 +666,7 @@ public class CaixaPanel extends JPanel {
         if (job.printDialog()) { try { job.print(); } catch (PrinterException ex) { showError("Erro ao imprimir: " + ex.getMessage()); } }
     }
 
-    // ── Helpers visuais ───────────────────────────────────────────────────────
+    
 
     private void addL(JPanel p, String t, Font f, Color c, int align) {
         JLabel l = new JLabel(t, align); l.setFont(f); l.setForeground(c);

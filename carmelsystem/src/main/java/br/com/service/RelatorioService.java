@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Regras de negócio para geração de relatórios.
- */
 public class RelatorioService {
 
     private final EntityManagerFactory emf;
@@ -22,12 +19,9 @@ public class RelatorioService {
         this.emf = emf;
     }
 
-    // ── Relatório de Vendas ───────────────────────────────────────────────────
+    
 
-    /**
-     * Busca pagamentos (notas emitidas) no período.
-     * Usa valorFinal (com desconto) — nunca o valor bruto.
-     */
+    
     public List<Pagamento> buscarVendasPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         if (inicio == null || fim == null)
             throw new RegraNegocioException("Período obrigatório para o relatório de vendas.");
@@ -49,25 +43,21 @@ public class RelatorioService {
         } finally { em.close(); }
     }
 
-    /**
-     * Calcula o total real das vendas (usando valorFinal com desconto).
-     */
+    
     public BigDecimal calcularTotalVendas(List<Pagamento> pagamentos) {
         return pagamentos.stream()
                 .map(p -> p.getValorFinal() != null ? p.getValorFinal() : p.getValorPago())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Calcula o total de descontos concedidos no período.
-     */
+    
     public BigDecimal calcularTotalDescontos(List<Pagamento> pagamentos) {
         return pagamentos.stream()
                 .map(p -> p.getDesconto() != null ? p.getDesconto() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    // ── Relatório de Estoque ──────────────────────────────────────────────────
+    
 
     public List<Produto> buscarTodosProdutosParaEstoque() {
         EntityManager em = emf.createEntityManager();
@@ -88,14 +78,12 @@ public class RelatorioService {
         } finally { em.close(); }
     }
 
-    // ── Dashboard / Home ──────────────────────────────────────────────────────
+    
 
     public record ProdutoRanking(String nome, Long quantidade, BigDecimal total) {}
     public record ClienteRanking(String nome, Long pedidos, BigDecimal total) {}
 
-    /**
-     * Top produtos mais vendidos no mês — apenas pedidos CONFIRMADOS.
-     */
+    
     public List<ProdutoRanking> topProdutosMes(LocalDateTime inicio, LocalDateTime fim) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -116,9 +104,7 @@ public class RelatorioService {
         } finally { em.close(); }
     }
 
-    /**
-     * Top clientes que mais compraram no mês — usando valorFinal (com desconto).
-     */
+    
     public List<ClienteRanking> topClientesMes(LocalDateTime inicio, LocalDateTime fim) {
         EntityManager em = emf.createEntityManager();
         try {

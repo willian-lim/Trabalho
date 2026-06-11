@@ -12,9 +12,6 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Regras de negócio de Clientes e Fornecedores.
- */
 public class ClienteService {
 
     private final ClienteRepository repo;
@@ -23,11 +20,11 @@ public class ClienteService {
         this.repo = new ClienteRepository(emf);
     }
 
-    // ── Pessoa Física ──────────────────────────────────────────────────────────
+    
 
     public List<Cliente> listarPF() { return repo.buscarTodosPF(); }
 
-    /** Busca PF por nome ou CPF (parcial). Termo vazio retorna todos. */
+    
     public List<Cliente> buscarPF(String termo) { return repo.buscarPFPorTermo(termo); }
 
     public Optional<Cliente> buscarPFPorId(Long id) { return repo.buscarPFPorId(id); }
@@ -60,11 +57,11 @@ public class ClienteService {
             throw new RegraNegocioException("Já existe um cliente com o CPF '" + c.getCpf() + "'.");
     }
 
-    // ── Pessoa Jurídica ────────────────────────────────────────────────────────
+    
 
     public List<ClienteJuridico> listarPJ() { return repo.buscarTodosPJ(); }
 
-    /** Busca PJ por razão social, nome fantasia ou CNPJ (parcial). Termo vazio retorna todos. */
+    
     public List<ClienteJuridico> buscarPJ(String termo) { return repo.buscarPJPorTermo(termo); }
 
     public Optional<ClienteJuridico> buscarPJPorId(Long id) { return repo.buscarPJPorId(id); }
@@ -87,11 +84,11 @@ public class ClienteService {
             throw new RegraNegocioException("Razão Social deve ter no máximo 150 caracteres.");
     }
 
-    // ── Fornecedor ─────────────────────────────────────────────────────────────
+    
 
     public List<Fornecedor> listarFornecedores() { return repo.buscarTodosFornecedores(); }
 
-    /** Busca Fornecedor por razão social, nome fantasia ou CNPJ (parcial). Termo vazio retorna todos. */
+    
     public List<Fornecedor> buscarFornecedores(String termo) { return repo.buscarFornecedorPorTermo(termo); }
 
     public Optional<Fornecedor> buscarFornecedorPorId(Long id) { return repo.buscarFornecedorPorId(id); }

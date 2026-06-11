@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-            // Sobrescrever com paleta creme/amarelada
+            
             Color bg      = new Color(250, 246, 235);
             Color surface = new Color(255, 252, 244);
             Color text    = new Color(55, 40, 20);

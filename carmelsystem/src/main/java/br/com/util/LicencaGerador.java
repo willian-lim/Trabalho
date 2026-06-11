@@ -49,27 +49,21 @@ public class LicencaGerador {
         System.out.println();
     }
 
-    /**
-     * Gera chave curta no formato: XXXXX-XXXXX-XXXXX-XXXXX
-     *
-     * Internamente: Base64( dataInicio|serial|hmac16chars )
-     * O HMAC usa apenas os primeiros 16 caracteres — suficiente para segurança
-     * e resulta em uma chave bem mais curta.
-     */
+    
     public static String gerarChave(LocalDate dataInicio, int serial) throws Exception {
         String dataStr  = dataInicio.format(FMT);
         String payload  = dataStr + SEP + serial;
 
-        // Apenas 16 primeiros chars do HMAC — seguro e mantém chave curta
+        
         String hmacCurto = LicencaManager.hmac(payload + "CARMEL-LICENCA-V4").substring(0, 16);
         String conteudo  = payload + SEP + hmacCurto;
 
-        // Base64 SEM padding, SEM uppercase (case-sensitive!)
+        
         String base64 = Base64.getEncoder()
                 .encodeToString(conteudo.getBytes(java.nio.charset.StandardCharsets.UTF_8))
                 .replace("=", "");
 
-        // Grupos de 5 chars separados por hífen
+        
         return formatarEmGrupos(base64, 5, LicencaManager.SEP_VISUAL);
     }
 

@@ -12,9 +12,6 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Regras de negócio relacionadas a Produtos.
- */
 public class ProdutoService {
 
     private final ProdutoRepository repo;
@@ -41,17 +38,13 @@ public class ProdutoService {
         return repo.buscarPorFiltros(nome, precoMin, precoMax, codBarras);
     }
 
-    /**
-     * Salva ou atualiza um produto, aplicando todas as validações.
-     */
+    
     public Produto salvar(Produto produto) {
         validarProduto(produto);
         return repo.salvar(produto);
     }
 
-    /**
-     * Adiciona estoque ao produto. Exige senha de administrador.
-     */
+    
     public Produto adicionarEstoque(Long produtoId, int quantidade, String senhaAdmin) {
         if (!SenhaUtil.isAdmin(senhaAdmin))
             throw new RegraNegocioException("Senha de administrador incorreta.");
@@ -68,9 +61,7 @@ public class ProdutoService {
         return repo.salvar(produto);
     }
 
-    /**
-     * Atualiza o preço de custo e recalcula o preço médio ponderado.
-     */
+    
     public Produto atualizarPrecoCusto(Produto produto, BigDecimal novoCusto) {
         if (novoCusto == null || novoCusto.compareTo(BigDecimal.ZERO) <= 0) return produto;
 
@@ -105,19 +96,9 @@ public class ProdutoService {
         repo.excluir(id);
     }
 
-    // ── Calculadora Impressão 3D ──────────────────────────────────────────────
+    
 
-    /**
-     * Parâmetros de entrada para o cálculo de custo de impressão 3D.
-     *
-     * @param precoPorKgFilamento  Preço do kg do filamento em R$
-     * @param gramasUsadas         Quantidade de material usada na impressão, em gramas
-     * @param horasImpressao       Duração da impressão em horas
-     * @param tarifaEnergia        Taxa de energia da distribuidora em R$/kWh
-     * @param consumoWatts         Consumo médio da impressora em Watts
-     * @param valorHoraMaoDeObra   Valor da hora de trabalho em R$ (0 para ignorar)
-     * @param margemLucroPercent   Margem de lucro em % (ex: 500 para 500%)
-     */
+    
     public record Impressao3DInput(
             double precoPorKgFilamento,
             double gramasUsadas,
@@ -128,9 +109,7 @@ public class ProdutoService {
             double margemLucroPercent
     ) {}
 
-    /**
-     * Resultado do cálculo de impressão 3D.
-     */
+    
     public record Impressao3DResultado(
             BigDecimal custoFilamento,
             BigDecimal custoEnergia,
@@ -139,17 +118,7 @@ public class ProdutoService {
             BigDecimal precoVendaSugerido
     ) {}
 
-    /**
-     * Calcula os custos de uma impressão 3D e retorna o preço de venda sugerido.
-     * Toda a lógica de negócio fica aqui, isolada da UI.
-     *
-     * Fórmulas:
-     *   custoFilamento  = (precoPorKg / 1000) × gramas
-     *   custoEnergia    = (watts / 1000) × horas × tarifaKWh
-     *   custoMaoDeObra  = valorHora × horas
-     *   custoTotal      = filamento + energia + maoDeObra
-     *   precoVenda      = custoTotal × (1 + margem/100)
-     */
+    
     public Impressao3DResultado calcularImpressao3D(Impressao3DInput in) {
         if (in.precoPorKgFilamento() < 0)
             throw new RegraNegocioException("Preço do filamento não pode ser negativo.");
@@ -184,7 +153,7 @@ public class ProdutoService {
         return new Impressao3DResultado(custoFilamento, custoEnergia, custoMaoDeObra, custoTotal, precoVenda);
     }
 
-    // ── Validações ────────────────────────────────────────────────────────────
+    
 
     private void validarProduto(Produto p) {
         if (Validator.isBlank(p.getNome()))

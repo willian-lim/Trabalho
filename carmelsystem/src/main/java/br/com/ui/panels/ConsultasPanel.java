@@ -17,24 +17,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Tela unificada de Consultas:
- * - Aba 1: Relatório de Vendas (notas emitidas), com cancelamento de nota
- * - Aba 2: Consulta de Pedidos, com cancelamento de pedido
- */
 public class ConsultasPanel extends JPanel {
 
     private final ServiceLocator services;
     private static final DateTimeFormatter FMT_IN  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter FMT_OUT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    // ── Aba Vendas ─────────────────────────────────────────────────────────
+    
     private DefaultTableModel vendasModel;
     private JTable vendasTable;
     private JTextField tfVendasDataIni, tfVendasDataFim, tfVendasCliente;
     private JLabel lblResumoVendas;
 
-    // ── Aba Pedidos ────────────────────────────────────────────────────────
+    
     private DefaultTableModel pedidosModel;
     private JTable pedidosTable;
     private DefaultTableModel itensPedidoModel;
@@ -60,16 +55,16 @@ public class ConsultasPanel extends JPanel {
         add(tabs, BorderLayout.CENTER);
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    // ABA 1 — RELATÓRIO DE VENDAS
-    // ══════════════════════════════════════════════════════════════════════
+    
+    
+    
 
     private JPanel buildAbaVendas() {
         JPanel p = new JPanel(new BorderLayout(0, 4));
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        // Filtros
+        
         JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
         filtros.setBackground(UIFactory.XP_PANEL_BG);
         filtros.setBorder(UIFactory.groupBorder("Filtros de Período"));
@@ -115,7 +110,7 @@ public class ConsultasPanel extends JPanel {
         }));
         p.add(filtros, BorderLayout.NORTH);
 
-        // Tabela de vendas
+        
         vendasModel = new DefaultTableModel(
                 new String[]{"Pedido","Data/Hora","Cliente","Forma Pag.","Subtotal (R$)","Desconto (R$)","Total (R$)","ID_PAG"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -139,7 +134,7 @@ public class ConsultasPanel extends JPanel {
         vendasTable.getColumnModel().getColumn(4).setPreferredWidth(100);
         vendasTable.getColumnModel().getColumn(5).setPreferredWidth(100);
         vendasTable.getColumnModel().getColumn(6).setPreferredWidth(100);
-        // Esconde coluna ID_PAG
+        
         vendasTable.getColumnModel().getColumn(7).setMinWidth(0);
         vendasTable.getColumnModel().getColumn(7).setMaxWidth(0);
         vendasTable.getColumnModel().getColumn(7).setWidth(0);
@@ -148,7 +143,7 @@ public class ConsultasPanel extends JPanel {
         scroll.setBorder(BorderFactory.createLineBorder(new Color(172, 168, 153)));
         p.add(scroll, BorderLayout.CENTER);
 
-        // Rodapé
+        
         JPanel rodape = new JPanel(new BorderLayout(8, 0));
         rodape.setBackground(UIFactory.XP_PANEL_BG);
         rodape.setBorder(BorderFactory.createCompoundBorder(
@@ -239,7 +234,7 @@ public class ConsultasPanel extends JPanel {
         if (confirm != JOptionPane.YES_OPTION) return;
 
         try {
-            // Extrai ID do pedido (ex: "#42" → 42)
+            
             Long pedidoId = Long.parseLong(pedidoStr.replace("#", "").trim());
             services.pedidos().cancelarNota(pedidoId);
             JOptionPane.showMessageDialog(this, "Nota cancelada com sucesso!\nO pedido voltou para status PENDENTE.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -307,16 +302,16 @@ public class ConsultasPanel extends JPanel {
         return p;
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    // ABA 2 — CONSULTA DE PEDIDOS
-    // ══════════════════════════════════════════════════════════════════════
+    
+    
+    
 
     private JPanel buildAbaPedidos() {
         JPanel p = new JPanel(new BorderLayout(0, 4));
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        // Filtros
+        
         JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
         filtros.setBackground(UIFactory.XP_PANEL_BG);
         filtros.setBorder(UIFactory.groupBorder("Filtros de Pedidos"));
@@ -353,7 +348,7 @@ public class ConsultasPanel extends JPanel {
         }));
         p.add(filtros, BorderLayout.NORTH);
 
-        // Tabela de pedidos
+        
         pedidosModel = new DefaultTableModel(
                 new String[]{"ID","Data/Hora","Cliente","Total (R$)","Status"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -382,7 +377,7 @@ public class ConsultasPanel extends JPanel {
             return cell;
         });
 
-        // Tabela de itens do pedido selecionado
+        
         itensPedidoModel = new DefaultTableModel(
                 new String[]{"Produto","Qtd","Preço Unit.","Subtotal"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -401,7 +396,7 @@ public class ConsultasPanel extends JPanel {
         split.setDividerSize(5);
         p.add(split, BorderLayout.CENTER);
 
-        // Rodapé com ações
+        
         JPanel rodape = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
         rodape.setBackground(UIFactory.XP_PANEL_BG);
         rodape.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(172, 168, 153)));
@@ -500,7 +495,7 @@ public class ConsultasPanel extends JPanel {
     private void abrirImpressaoPedido(Long pedidoId) {
         try {
             Pedido ped = services.pedidos().buscarComItens(pedidoId);
-            // Reutiliza o layout de folha do PedidoPanel via reflexão simples — monta aqui mesmo
+            
             JPanel content = buildFolhaPedido(ped);
             java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
             job.setJobName("Pedido #" + ped.getId());
@@ -590,10 +585,10 @@ public class ConsultasPanel extends JPanel {
         return p;
     }
 
-    // ── Utilitários ────────────────────────────────────────────────────────
+    
 
     public void reloadConsultas() {
-        // Carrega vendas do dia ao abrir
+        
         String hoje = LocalDate.now().format(FMT_IN);
         tfVendasDataIni.setText(hoje); tfVendasDataFim.setText(hoje);
         buscarVendas();

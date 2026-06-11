@@ -18,10 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Relatório de Vendas (Notas Emitidas).
- * Usa valorFinal (com desconto). Delegado ao RelatorioService.
- */
 public class RelatorioVendasPanel extends JPanel {
 
     private final ServiceLocator services;
@@ -42,7 +38,7 @@ public class RelatorioVendasPanel extends JPanel {
     private void build() {
         add(UIFactory.xpTitleBar("Relatório de Vendas"), BorderLayout.NORTH);
 
-        // Filtros
+        
         JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         filtros.setBackground(UIFactory.XP_PANEL_BG);
         filtros.setBorder(UIFactory.groupBorder("Período"));
@@ -64,7 +60,7 @@ public class RelatorioVendasPanel extends JPanel {
         tfDataFim.addActionListener(e -> buscar());
         add(filtros, BorderLayout.NORTH);
 
-        // Tabela
+        
         tableModel = new DefaultTableModel(
                 new String[]{"#","Data/Hora","Cliente","Forma Pagamento","Subtotal (R$)","Desconto (R$)","Total (R$)"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -90,7 +86,7 @@ public class RelatorioVendasPanel extends JPanel {
         scroll.setBorder(BorderFactory.createLineBorder(new Color(172, 168, 153)));
         add(scroll, BorderLayout.CENTER);
 
-        // Rodapé
+        
         JPanel rodape = new JPanel(new BorderLayout(8, 0));
         rodape.setBackground(new Color(212, 208, 200));
         rodape.setBorder(BorderFactory.createCompoundBorder(

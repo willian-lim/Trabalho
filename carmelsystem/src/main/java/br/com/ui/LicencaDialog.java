@@ -9,18 +9,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Diálogo de verificação/ativação de licença exibido na inicialização.
- *
- * SEM_LICENCA / EXPIRADA / CORROMPIDA / CHAVE_JA_UTILIZADA → bloqueia.
- * VALIDA com ≤7 dias → aviso, mas deixa entrar.
- * VALIDA normal       → passa direto, sem diálogo.
- */
 public class LicencaDialog extends JDialog {
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // Cores
+    
     private static final Color COR_FUNDO        = new Color(28, 28, 38);
     private static final Color COR_CAMPO_FUNDO  = new Color(18, 18, 28);
     private static final Color COR_VERDE         = new Color(34, 160, 70);
@@ -33,7 +26,7 @@ public class LicencaDialog extends JDialog {
 
     private boolean autorizado = false;
 
-    // ── Fábrica estática ──────────────────────────────────────────────────────
+    
 
     public static boolean verificarEExibir(Frame parent) {
         ResultadoLicenca resultado = LicencaManager.verificar();
@@ -45,7 +38,7 @@ public class LicencaDialog extends JDialog {
                     dlg.setVisible(true);
                     yield dlg.autorizado;
                 }
-                yield true; // válida e longe de vencer — passa direto
+                yield true; 
             }
             case SEM_LICENCA, EXPIRADA, CORROMPIDA, CHAVE_JA_UTILIZADA -> {
                 LicencaDialog dlg = new LicencaDialog(parent, resultado, true);
@@ -55,7 +48,7 @@ public class LicencaDialog extends JDialog {
         };
     }
 
-    // ── Construtor ────────────────────────────────────────────────────────────
+    
 
     private LicencaDialog(Frame parent, ResultadoLicenca resultado, boolean bloqueado) {
         super(parent, "Licença do Sistema — Carmel", true);
@@ -69,7 +62,7 @@ public class LicencaDialog extends JDialog {
         add(criarCorpo(resultado, bloqueado), BorderLayout.CENTER);
     }
 
-    // ── Corpo da UI ───────────────────────────────────────────────────────────
+    
 
     private JPanel criarCorpo(ResultadoLicenca resultado, boolean bloqueado) {
         JPanel corpo = new JPanel();
@@ -77,7 +70,7 @@ public class LicencaDialog extends JDialog {
         corpo.setBackground(COR_FUNDO);
         corpo.setBorder(new EmptyBorder(18, 24, 12, 24));
 
-        // Texto informativo
+        
         JLabel lblInfo = new JLabel("<html>" + montarTextoInfo(resultado) + "</html>");
         lblInfo.setForeground(COR_TEXTO);
         lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -87,7 +80,7 @@ public class LicencaDialog extends JDialog {
         if (bloqueado) {
             corpo.add(Box.createVerticalStrut(18));
 
-            // Label do campo
+            
             JLabel lblChave = new JLabel("Chave de ativação:");
             lblChave.setForeground(COR_LABEL);
             lblChave.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -95,7 +88,7 @@ public class LicencaDialog extends JDialog {
             corpo.add(lblChave);
             corpo.add(Box.createVerticalStrut(6));
 
-            // Campo de texto para a chave
+            
             JTextArea tfChave = new JTextArea(3, 38);
             tfChave.setFont(new Font("Consolas", Font.PLAIN, 12));
             tfChave.setBackground(COR_CAMPO_FUNDO);
@@ -113,7 +106,7 @@ public class LicencaDialog extends JDialog {
             scroll.setBorder(null);
             corpo.add(scroll);
 
-            // Hint de formato
+            
             JLabel lblHint = new JLabel("  Formato: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX");
             lblHint.setForeground(new Color(120, 130, 150));
             lblHint.setFont(new Font("Tahoma", Font.ITALIC, 10));
@@ -122,7 +115,7 @@ public class LicencaDialog extends JDialog {
 
             corpo.add(Box.createVerticalStrut(16));
 
-            // Botões
+            
             JPanel btns = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
             btns.setOpaque(false);
             btns.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -138,7 +131,7 @@ public class LicencaDialog extends JDialog {
             corpo.add(btns);
 
         } else {
-            // Aviso de vencimento próximo
+            
             corpo.add(Box.createVerticalStrut(14));
             JPanel btns = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
             btns.setOpaque(false);
@@ -154,7 +147,7 @@ public class LicencaDialog extends JDialog {
         return corpo;
     }
 
-    // ── Ativação ──────────────────────────────────────────────────────────────
+    
 
     private void tentarAtivar(String chaveDigitada) {
         String chave = chaveDigitada.trim();
@@ -200,7 +193,7 @@ public class LicencaDialog extends JDialog {
         }
     }
 
-    // ── Componentes de UI ─────────────────────────────────────────────────────
+    
 
     private JPanel criarHeader(ResultadoLicenca r) {
         Color cor = switch (r.status()) {

@@ -31,9 +31,9 @@ public class Fornecedor {
     private String email;
 
     @Column(length = 100)
-    private String contato; // nome do contato/representante
+    private String contato; 
 
-    // Endereço inline (sem entidade separada para simplificar)
+    
     @Column(length = 10)
     private String cep;
 

@@ -2,11 +2,6 @@ package br.carmel.service;
 
 import jakarta.persistence.EntityManagerFactory;
 
-/**
- * Centraliza a criação e acesso a todos os serviços.
- * Instanciado uma única vez no MainFrame e passado para os painéis.
- * Elimina a necessidade de cada painel criar seus próprios EntityManagers diretamente.
- */
 public class ServiceLocator {
 
     private final ProdutoService   produtoService;

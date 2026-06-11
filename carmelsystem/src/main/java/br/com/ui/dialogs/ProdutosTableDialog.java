@@ -10,9 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Diálogo que exibe a listagem de Produtos em tabela.
- */
 public class ProdutosTableDialog extends JDialog {
 
     public ProdutosTableDialog(Component parent, EntityManagerFactory emf) {

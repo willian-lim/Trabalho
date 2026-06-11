@@ -12,9 +12,9 @@ public class CaixaRepository extends BaseRepository {
 
     public CaixaRepository(EntityManagerFactory emf) { super(emf); }
 
-    // ── Por número de caixa ───────────────────────────────────────────────────
+    
 
-    /** Retorna todos os movimentos de um caixa específico (pelo número sequencial). */
+    
     public List<CaixaMovimento> buscarMovimentosPorNumero(Long numeroCaixa) {
         EntityManager em = abrirEm();
         try {
@@ -24,7 +24,7 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /** Retorna o próximo número de caixa (MAX + 1, ou 1 se nenhum existe). */
+    
     public Long proximoNumeroCaixa() {
         EntityManager em = abrirEm();
         try {
@@ -34,11 +34,11 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /** Retorna o número do caixa atualmente aberto, ou null se não houver. */
+    
     public Long buscarNumeroCaixaAberto() {
         EntityManager em = abrirEm();
         try {
-            // Pega o maior numeroCaixa que tem ABERTURA mas não tem FECHAMENTO
+            
             List<Long> abertos = em.createQuery(
                     "SELECT DISTINCT m.numeroCaixa FROM CaixaMovimento m " +
                     "WHERE m.tipo = :ab " +
@@ -53,7 +53,7 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /** Lista todos os números de caixa que já foram fechados, em ordem decrescente. */
+    
     public List<Long> buscarNumerosCaixaFechados() {
         EntityManager em = abrirEm();
         try {
@@ -64,7 +64,7 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    // ── Vendas ────────────────────────────────────────────────────────────────
+    
 
     public BigDecimal buscarTotalVendasPorPeriodo(java.time.LocalDateTime inicio, java.time.LocalDateTime fim) {
         EntityManager em = abrirEm();
@@ -79,7 +79,7 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    // ── Compat. legado (ainda usados por RelatorioService) ────────────────────
+    
 
     public List<CaixaMovimento> buscarMovimentosDia(LocalDate data) {
         EntityManager em = abrirEm();
@@ -99,7 +99,7 @@ public class CaixaRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    // ── Persistência ──────────────────────────────────────────────────────────
+    
 
     public CaixaMovimento registrar(CaixaMovimento movimento) {
         EntityManager em = abrirEm();

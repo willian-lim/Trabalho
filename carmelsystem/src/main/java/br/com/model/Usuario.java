@@ -18,7 +18,7 @@ public class Usuario {
     private String login;
 
     @Column(nullable = false, length = 200)
-    private String senha; // armazenado como hash simples SHA-256
+    private String senha; 
 
     @Column(nullable = false, length = 100)
     private String nomeCompleto;

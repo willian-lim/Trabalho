@@ -15,10 +15,6 @@ import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Painel de Emissão de Nota — atende pedidos PENDENTES.
- * Toda lógica delegada ao PedidoService e CaixaService.
- */
 public class EmitirNotaPanel extends JPanel {
 
     private final ServiceLocator services;
@@ -60,7 +56,7 @@ public class EmitirNotaPanel extends JPanel {
         carregarPendentes();
     }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Emitir Nota — Atendimento de Pedidos"), BorderLayout.NORTH);
@@ -131,7 +127,7 @@ public class EmitirNotaPanel extends JPanel {
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(4, 8, 8, 8));
 
-        // Esquerda: itens somente leitura
+        
         JPanel esquerda = new JPanel(new BorderLayout(0, 4));
         esquerda.setBackground(UIFactory.XP_BG);
         esquerda.setBorder(UIFactory.groupBorder("Itens do Pedido"));
@@ -161,12 +157,12 @@ public class EmitirNotaPanel extends JPanel {
         esquerda.add(scrollItens, BorderLayout.CENTER);
         p.add(esquerda, BorderLayout.CENTER);
 
-        // Direita: desconto + totais + botões
+        
         JPanel direita = new JPanel(new BorderLayout(0, 6));
         direita.setBackground(UIFactory.XP_BG);
         direita.setPreferredSize(new Dimension(240, 0));
 
-        // Desconto
+        
         JPanel descPanel = new JPanel(new GridBagLayout());
         descPanel.setBackground(UIFactory.XP_BG);
         descPanel.setBorder(UIFactory.groupBorder("Desconto"));
@@ -188,7 +184,7 @@ public class EmitirNotaPanel extends JPanel {
         tfDesconto.addActionListener(e -> aplicarDesconto());
         direita.add(descPanel, BorderLayout.NORTH);
 
-        // Totais
+        
         JPanel totaisPanel = new JPanel(new GridBagLayout());
         totaisPanel.setBackground(UIFactory.XP_BG);
         totaisPanel.setBorder(UIFactory.groupBorder("Resumo"));
@@ -220,7 +216,7 @@ public class EmitirNotaPanel extends JPanel {
         gt.gridx = 1; gt.weightx = 1; totaisPanel.add(lblTotal, gt);
         direita.add(totaisPanel, BorderLayout.CENTER);
 
-        // Botões
+        
         JPanel btnPanel = new JPanel(new GridLayout(2, 1, 0, 6));
         btnPanel.setOpaque(false); btnPanel.setBorder(new EmptyBorder(0, 4, 4, 4));
 
@@ -247,7 +243,7 @@ public class EmitirNotaPanel extends JPanel {
         return bar;
     }
 
-    // ── Carregar dados ────────────────────────────────────────────────────────
+    
 
     private void carregarPendentes() {
         pendentesModel.setRowCount(0);
@@ -290,7 +286,7 @@ public class EmitirNotaPanel extends JPanel {
         } catch (RegraNegocioException e) { showError(e.getMessage()); }
     }
 
-    // ── Desconto ──────────────────────────────────────────────────────────────
+    
 
     private void aplicarDesconto() {
         if (pedidoSelecionadoId == null) return;
@@ -320,7 +316,7 @@ public class EmitirNotaPanel extends JPanel {
                 ? new Color(0, 130, 0) : new Color(0, 84, 166));
     }
 
-    // ── Emitir Nota ───────────────────────────────────────────────────────────
+    
 
     private void emitirNota() {
         if (pedidoSelecionadoId == null) {
@@ -330,7 +326,7 @@ public class EmitirNotaPanel extends JPanel {
 
         BigDecimal totalFinal = subtotalAtual.subtract(descontoAplicado).max(BigDecimal.ZERO);
 
-        // Diálogo de pagamento
+        
         JPanel dlg = new JPanel(new GridBagLayout());
         dlg.setBackground(UIFactory.XP_BG);
         GridBagConstraints gc = new GridBagConstraints();
@@ -387,11 +383,11 @@ public class EmitirNotaPanel extends JPanel {
             FormaPagamento forma = (FormaPagamento) cbForma.getSelectedItem();
             boolean caixaAberto = caixaPanel != null && caixaPanel.isCaixaAberto();
 
-            // Delega toda a lógica ao PedidoService
+            
             PedidoService.ResultadoEmissao resultado = services.pedidos().emitirNota(
                     pedidoSelecionadoId, descontoAplicado, forma, valorPago, caixaAberto);
 
-            // Registra no caixa
+            
             if (caixaPanel != null) caixaPanel.registrarVenda(resultado.pagamento);
 
             String msg = "✅ Nota emitida!\n"

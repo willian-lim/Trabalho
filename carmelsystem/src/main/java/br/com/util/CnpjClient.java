@@ -7,11 +7,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Cliente da BrasilAPI para consulta de CNPJ.
- * Endpoint: https://brasilapi.com.br/api/cnpj/v1/{cnpj}
- * Gratuito, sem autenticação, sem limite declarado.
- */
 public class CnpjClient {
 
     public static class DadosEmpresa {
@@ -26,19 +21,15 @@ public class CnpjClient {
         public String bairro;
         public String cidade;
         public String uf;
-        public String situacao; // ATIVA, BAIXADA, etc
+        public String situacao; 
     }
 
-    /**
-     * Consulta dados da empresa pelo CNPJ via BrasilAPI.
-     * @param cnpj apenas dígitos (14 números)
-     * @return DadosEmpresa ou null se não encontrado
-     */
+    
     public static DadosEmpresa consultar(String cnpj) throws Exception {
         String cnpjLimpo = cnpj.replaceAll("[^0-9]", "");
         if (cnpjLimpo.length() != 14) throw new Exception("CNPJ deve ter 14 dígitos.");
 
-        URL url = new URL("https://brasilapi.com.br/api/cnpj/v1/" + cnpjLimpo);
+        URL url = new URL("https:
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setConnectTimeout(8000);
@@ -46,7 +37,7 @@ public class CnpjClient {
         conn.setRequestProperty("Accept", "application/json");
 
         int status = conn.getResponseCode();
-        if (status == 404) return null; // CNPJ não encontrado
+        if (status == 404) return null; 
         if (status != 200) throw new Exception("Erro na consulta: HTTP " + status);
 
         StringBuilder sb = new StringBuilder();
@@ -58,9 +49,7 @@ public class CnpjClient {
         return parsearJson(sb.toString());
     }
 
-    /**
-     * Parser JSON manual — evita dependência externa.
-     */
+    
     private static DadosEmpresa parsearJson(String json) {
         DadosEmpresa d = new DadosEmpresa();
         d.razaoSocial  = extrair(json, "razao_social");
@@ -75,7 +64,7 @@ public class CnpjClient {
         d.uf           = extrair(json, "uf");
         d.situacao     = extrair(json, "descricao_situacao_cadastral");
 
-        // Telefone: concatena DDD + número
+        
         String ddd = extrair(json, "ddd_telefone_1");
         String tel = extrair(json, "telefone_1");
         if (ddd != null && !ddd.isEmpty() && tel != null && !tel.isEmpty())
@@ -86,7 +75,7 @@ public class CnpjClient {
         return d;
     }
 
-    /** Extrai valor de campo JSON simples (string ou número). */
+    
     private static String extrair(String json, String campo) {
         String chave = "\"" + campo + "\"";
         int idx = json.indexOf(chave);
@@ -98,14 +87,14 @@ public class CnpjClient {
         if (start >= json.length()) return "";
         char first = json.charAt(start);
         if (first == '"') {
-            // Valor string
+            
             int end = json.indexOf("\"", start + 1);
             if (end < 0) return "";
             return json.substring(start + 1, end).trim();
         } else if (first == 'n') {
-            return ""; // null
+            return ""; 
         } else {
-            // Valor numérico ou boolean
+            
             int end = start;
             while (end < json.length() && json.charAt(end) != ',' && json.charAt(end) != '}') end++;
             return json.substring(start, end).trim();

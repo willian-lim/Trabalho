@@ -9,9 +9,6 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Regras de negócio de Usuários e Autenticação.
- */
 public class UsuarioService {
 
     private final EntityManagerFactory emf;
@@ -20,9 +17,7 @@ public class UsuarioService {
         this.emf = emf;
     }
 
-    /**
-     * Autentica o usuário. Retorna o usuário se credenciais corretas.
-     */
+    
     public Usuario autenticar(String login, String senha) {
         if (login == null || login.isBlank())
             throw new RegraNegocioException("Login é obrigatório.");
@@ -42,9 +37,7 @@ public class UsuarioService {
         } finally { em.close(); }
     }
 
-    /**
-     * Cadastra novo usuário. Exige senha do administrador.
-     */
+    
     public void cadastrar(String senhaAdmin, String nomeCompleto,
                           String login, String senha, String confirmacao) {
         if (!SenhaUtil.isAdmin(senhaAdmin))
@@ -82,16 +75,14 @@ public class UsuarioService {
         } finally { em.close(); }
     }
 
-    /**
-     * Altera a senha de um usuário.
-     */
+    
     public void alterarSenha(String login, String senhaAtual, String novaSenha, String confirmacao) {
         if (novaSenha == null || novaSenha.length() < 4)
             throw new RegraNegocioException("Nova senha deve ter no mínimo 4 caracteres.");
         if (!novaSenha.equals(confirmacao))
             throw new RegraNegocioException("As novas senhas não conferem.");
 
-        // Autentica com senha atual
+        
         autenticar(login, senhaAtual);
 
         EntityManager em = emf.createEntityManager();
@@ -112,9 +103,7 @@ public class UsuarioService {
         } finally { em.close(); }
     }
 
-    /**
-     * Exclui um usuário. Exige senha do administrador.
-     */
+    
     public void excluir(Long usuarioId, String senhaAdmin) {
         if (!SenhaUtil.isAdmin(senhaAdmin))
             throw new RegraNegocioException("Senha de administrador incorreta.");
@@ -158,7 +147,7 @@ public class UsuarioService {
             em.getTransaction().begin();
             Usuario u = new Usuario();
             u.setLogin("admin");
-            // Senha: admin
+            
             u.setSenha("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918");
             u.setNomeCompleto("Administrador");
             em.persist(u);

@@ -46,7 +46,7 @@ public class Pedido {
     }
 
     public void adicionarItem(ItensPedido item) {
-        item.calcularSubtotal(); // Calcular subtotal ANTES de adicionar
+        item.calcularSubtotal(); 
         itensPedidos.add(item);
         item.setPedido(this);
         calcularValorTotal();

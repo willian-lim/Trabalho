@@ -6,10 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-/**
- * Painel base com imagem de fundo.
- * Todos os painéis do sistema estendem esta classe.
- */
 public class BackgroundPanel extends JPanel {
 
     private static BufferedImage bgImage;
@@ -43,20 +39,14 @@ public class BackgroundPanel extends JPanel {
         }
     }
 
-    /**
-     * Torna todos os JPanel filhos não-opacos recursivamente.
-     * Chame este método no final do construtor de cada painel filho.
-     */
+    
     protected void aplicarFundoTransparente() {
         tornarTransparente(this);
-        // Garante repaint
+        
         SwingUtilities.invokeLater(() -> tornarTransparente(this));
     }
 
-    /**
-     * Versão estática — use para tornar painéis de abas transparentes.
-     * Chame no final de cada método buildXxxPanel() que retorna JPanel.
-     */
+    
     public static <T extends JPanel> T transparente(T panel) {
         tornarTransparenteEstatico(panel);
         return panel;
@@ -71,7 +61,7 @@ public class BackgroundPanel extends JPanel {
             if (comp instanceof JTable || comp instanceof JTextField
                     || comp instanceof JTextArea || comp instanceof JPasswordField
                     || comp instanceof JComboBox) {
-                // mantém opacos
+                
             } else if (comp instanceof JScrollPane sp) {
                 sp.setOpaque(false);
                 sp.getViewport().setOpaque(false);
@@ -81,7 +71,7 @@ public class BackgroundPanel extends JPanel {
                 tornarTransparenteEstatico(sp);
             } else if (comp instanceof JTabbedPane tp) {
                 tp.setOpaque(false);
-                // Percorre todos os componentes das abas
+                
                 for (int i = 0; i < tp.getTabCount(); i++) {
                     Component tabComp = tp.getComponentAt(i);
                     if (tabComp instanceof Container c) tornarTransparenteEstatico(c);

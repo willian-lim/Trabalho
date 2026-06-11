@@ -11,10 +11,6 @@ import java.awt.*;
 import java.awt.print.*;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Diálogo com relatório do pedido finalizado.
- * Exibe os dados do pedido e permite impressão.
- */
 public class RelatorioPedidoDialog extends JDialog implements Printable {
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -26,7 +22,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
     private final Pedido    pedido;
     private final Pagamento pagamento;
 
-    // Painel que será impresso
+    
     private JPanel printPanel;
 
     public RelatorioPedidoDialog(Window owner, Pedido pedido, Pagamento pagamento) {
@@ -39,7 +35,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         setResizable(false);
         setLayout(new BorderLayout());
 
-        // Área de visualização com scroll
+        
         printPanel = buildReportPanel();
         JScrollPane scroll = new JScrollPane(printPanel);
         scroll.setBorder(null);
@@ -50,7 +46,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         setVisible(true);
     }
 
-    // ── Monta o conteúdo do relatório ─────────────────────────────────────────
+    
 
     private JPanel buildReportPanel() {
         JPanel p = new JPanel();
@@ -58,14 +54,14 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         p.setBackground(Color.WHITE);
         p.setBorder(new EmptyBorder(20, 28, 20, 28));
 
-        // ── Cabeçalho ──────────────────────────────────────────────────────────
+        
         p.add(centeredLabel("CARMEL SISTEMA DE GESTÃO", FONT_TITLE, new Color(0, 60, 140)));
         p.add(centeredLabel("COMPROVANTE DE PEDIDO", new Font("Tahoma", Font.BOLD, 12), Color.BLACK));
         p.add(vgap(6));
         p.add(separator());
         p.add(vgap(8));
 
-        // ── Info do pedido ─────────────────────────────────────────────────────
+        
         p.add(infoRow("Pedido Nº:", "#" + pedido.getId()));
         p.add(infoRow("Data/Hora:", pedido.getDataPedido().format(FMT)));
         p.add(infoRow("Status:", pedido.getStatus().toString()));
@@ -73,7 +69,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         p.add(separator());
         p.add(vgap(8));
 
-        // ── Cliente ────────────────────────────────────────────────────────────
+        
         p.add(sectionLabel("CLIENTE"));
         p.add(vgap(4));
         p.add(infoRow("Nome:", pedido.getCliente().getNome()));
@@ -84,11 +80,11 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         p.add(separator());
         p.add(vgap(8));
 
-        // ── Itens ──────────────────────────────────────────────────────────────
+        
         p.add(sectionLabel("ITENS DO PEDIDO"));
         p.add(vgap(6));
 
-        // Cabeçalho da tabela de itens
+        
         p.add(itemHeader());
 
         for (ItensPedido item : pedido.getItensPedidos()) {
@@ -108,7 +104,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         p.add(separator());
         p.add(vgap(4));
 
-        // Observações do pedido
+        
         if (pedido.getObservacoes() != null && !pedido.getObservacoes().isBlank()) {
             p.add(infoRow("Obs.:", pedido.getObservacoes()));
             p.add(vgap(4));
@@ -116,7 +112,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
             p.add(vgap(4));
         }
 
-        // ── Totais ─────────────────────────────────────────────────────────────
+        
         p.add(sectionLabel("PAGAMENTO"));
         p.add(vgap(6));
 
@@ -134,7 +130,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         p.add(separator());
         p.add(vgap(10));
 
-        // ── Rodapé ─────────────────────────────────────────────────────────────
+        
         p.add(centeredLabel("Obrigado pela preferência!", FONT_BOLD, new Color(0, 60, 140)));
         p.add(vgap(4));
         p.add(centeredLabel("Carmel Sistema v1.0", FONT_SMALL, Color.GRAY));
@@ -142,7 +138,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         return p;
     }
 
-    // ── Barra de botões ───────────────────────────────────────────────────────
+    
 
     private JPanel buildButtonBar() {
         JPanel bar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 8));
@@ -162,14 +158,14 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         return bar;
     }
 
-    // ── Impressão ─────────────────────────────────────────────────────────────
+    
 
     private void imprimir() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Pedido #" + pedido.getId());
         job.setPrintable(this);
 
-        // Abre o diálogo de impressão do sistema
+        
         if (job.printDialog()) {
             try {
                 job.print();
@@ -190,20 +186,20 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        // Traduz para a área imprimível
+        
         g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
         double pageWidth  = pageFormat.getImageableWidth();
         double pageHeight = pageFormat.getImageableHeight();
 
-        // Escala o painel para caber na página
+        
         Dimension panelSize = printPanel.getPreferredSize();
         double scaleX = pageWidth  / panelSize.getWidth();
         double scaleY = pageHeight / panelSize.getHeight();
         double scale  = Math.min(scaleX, scaleY);
         if (scale < 1.0) g2.scale(scale, scale);
 
-        // Força layout e pinta
+        
         printPanel.setSize(panelSize);
         printPanel.doLayout();
         printPanel.printAll(g2);
@@ -211,7 +207,7 @@ public class RelatorioPedidoDialog extends JDialog implements Printable {
         return PAGE_EXISTS;
     }
 
-    // ── Componentes de layout do relatório ───────────────────────────────────
+    
 
     private JLabel centeredLabel(String text, Font font, Color color) {
         JLabel l = new JLabel(text, SwingConstants.CENTER);

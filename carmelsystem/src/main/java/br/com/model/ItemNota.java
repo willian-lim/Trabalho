@@ -26,7 +26,7 @@ public class ItemNota {
     private Integer quantidade;
 
     @Column(name = "preco_unitario", precision = 10, scale = 2)
-    private BigDecimal precoUnitario; // custo unitário para entradas
+    private BigDecimal precoUnitario; 
 
     @Column(precision = 10, scale = 2)
     private BigDecimal subtotal;

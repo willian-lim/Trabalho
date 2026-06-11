@@ -11,9 +11,6 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Regras de negócio de transferências de estoque (Notas de Entrada/Saída).
- */
 public class EstoqueService {
 
     private final EntityManagerFactory emf;
@@ -24,9 +21,7 @@ public class EstoqueService {
         this.produtoRepo = new ProdutoRepository(emf);
     }
 
-    /**
-     * Emite nota de entrada: adiciona estoque e atualiza preço médio.
-     */
+    
     public NotaTransferencia emitirEntrada(Long fornecedorId, String numeroNota,
                                            String observacoes, List<ItemNotaDTO> itens) {
         if (itens == null || itens.isEmpty())
@@ -55,11 +50,11 @@ public class EstoqueService {
                 if (dto.quantidade() <= 0)
                     throw new RegraNegocioException("Quantidade deve ser maior que zero.");
 
-                // Debita estoque
+                
                 int estoqueAtual = pm.getEstoque() != null ? pm.getEstoque() : 0;
                 pm.setEstoque(estoqueAtual + dto.quantidade());
 
-                // Atualiza preço médio ponderado
+                
                 if (dto.precoUnitario() != null && dto.precoUnitario().compareTo(BigDecimal.ZERO) > 0) {
                     atualizarPrecoMedio(pm, dto.precoUnitario(), dto.quantidade());
                     pm.setPrecoCusto(dto.precoUnitario());
@@ -90,15 +85,13 @@ public class EstoqueService {
         } finally { em.close(); }
     }
 
-    /**
-     * Emite nota de saída: retira estoque com validação.
-     */
+    
     public NotaTransferencia emitirSaida(Long fornecedorId, String numeroNota,
                                          String observacoes, List<ItemNotaDTO> itens) {
         if (itens == null || itens.isEmpty())
             throw new RegraNegocioException("A nota deve ter pelo menos um item.");
 
-        // Valida estoque antes de persistir
+        
         for (ItemNotaDTO dto : itens) {
             produtoRepo.buscarPorId(dto.produtoId()).ifPresent(pm -> {
                 int est = pm.getEstoque() != null ? pm.getEstoque() : 0;
@@ -178,12 +171,7 @@ public class EstoqueService {
         }
     }
 
-
-
-    /**
-     * Lista notas com filtros opcionais de tipo e período.
-     * Passa null para ignorar o filtro correspondente.
-     */
+    
     public List<NotaTransferencia> listarNotas(TipoNota tipo, LocalDateTime de, LocalDateTime ate) {
         EntityManager em = emf.createEntityManager();
         try {

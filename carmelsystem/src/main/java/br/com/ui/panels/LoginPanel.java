@@ -6,9 +6,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-/**
- * Tela de login estilo Windows XP.
- */
 public class LoginPanel extends JPanel {
 
     private static final String DEFAULT_USER = "sistema";
@@ -18,12 +15,12 @@ public class LoginPanel extends JPanel {
 
     public LoginPanel(OnLoginSuccess onSuccess) {
         setLayout(new GridBagLayout());
-        setBackground(new Color(14, 14, 20)); // fundo azul XP
+        setBackground(new Color(14, 14, 20)); 
         build(onSuccess);
     }
 
     private void build(OnLoginSuccess onSuccess) {
-        // Card central branco
+        
         JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(UIFactory.XP_BG);
         card.setBorder(BorderFactory.createCompoundBorder(
@@ -36,7 +33,7 @@ public class LoginPanel extends JPanel {
         c.insets = new Insets(6, 12, 6, 12);
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        // Barra azul do topo
+        
         c.gridx = 0; c.gridy = 0; c.gridwidth = 2; c.insets = new Insets(0, 0, 14, 0);
         card.add(UIFactory.xpTitleBar("Acesso ao Sistema"), c);
 

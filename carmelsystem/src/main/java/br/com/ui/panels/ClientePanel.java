@@ -20,15 +20,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Painel de Cadastro de Clientes e Fornecedores.
- * Toda lógica de negócio delegada ao ClienteService.
- */
 public class ClientePanel extends JPanel {
 
     private final ServiceLocator services;
 
-    // ── Campos PF ─────────────────────────────────────────────────────────────
+    
     private final JTextField tfNome   = UIFactory.styledField("");
     private final JTextField tfCpf    = UIFactory.styledField("");
     private final JTextField tfTel    = UIFactory.styledField("");
@@ -41,7 +37,7 @@ public class ClientePanel extends JPanel {
     private final JTextField tfCidade = UIFactory.styledField("");
     private final JTextField tfUf     = UIFactory.styledField("");
 
-    // ── Campos PJ ─────────────────────────────────────────────────────────────
+    
     private final JTextField tfPJRazao    = UIFactory.styledField("");
     private final JTextField tfPJFantasia = UIFactory.styledField("");
     private final JTextField tfPJCnpj     = UIFactory.styledField("");
@@ -56,7 +52,7 @@ public class ClientePanel extends JPanel {
     private final JTextField tfPJCidade   = UIFactory.styledField("");
     private final JTextField tfPJUf       = UIFactory.styledField("");
 
-    // ── Campos Fornecedor ─────────────────────────────────────────────────────
+    
     private final JTextField tfFRazao    = UIFactory.styledField("");
     private final JTextField tfFFantasia = UIFactory.styledField("");
     private final JTextField tfFCnpj     = UIFactory.styledField("");
@@ -71,15 +67,15 @@ public class ClientePanel extends JPanel {
     private final JTextField tfFCidade   = UIFactory.styledField("");
     private final JTextField tfFUf       = UIFactory.styledField("");
 
-    // ── Estado ────────────────────────────────────────────────────────────────
+    
     private Long idPFSel = null, idPJSel = null, idFSel = null;
 
-    // ── Tabelas ───────────────────────────────────────────────────────────────
+    
     private DefaultTableModel pfModel, pjModel, fornModel;
     private JTable pfTable, pjTable, fornTable;
     private JTabbedPane formTabs, tableTabs;
 
-    // ── Campos de busca ───────────────────────────────────────────────────────
+    
     private JTextField tfBuscaPF, tfBuscaPJ, tfBuscaForn;
 
     public ClientePanel(ServiceLocator services) {
@@ -89,7 +85,7 @@ public class ClientePanel extends JPanel {
         build();
     }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Cadastro de Clientes e Fornecedores"), BorderLayout.NORTH);
@@ -121,7 +117,7 @@ public class ClientePanel extends JPanel {
         add(buildButtonBar(), BorderLayout.SOUTH);
     }
 
-    // ── Formulários ───────────────────────────────────────────────────────────
+    
 
     private JPanel buildFormPF() {
         JPanel p = form("Cliente — Pessoa Física");
@@ -180,7 +176,7 @@ public class ClientePanel extends JPanel {
         return wrap(p);
     }
 
-    // ── Tabelas com barra de busca ────────────────────────────────────────────
+    
 
     private JPanel buildTabelaPF() {
         pfModel = tableModel("ID","Nome","CPF","Telefone","E-mail");
@@ -233,13 +229,13 @@ public class ClientePanel extends JPanel {
         return tabelaComBusca(fornTable, tfBuscaForn, "Razão social, fantasia ou CNPJ...");
     }
 
-    /** Cria o painel de tabela com a barra de busca no topo. */
+    
     private JPanel tabelaComBusca(JTable tabela, JTextField tfBusca, String placeholder) {
         JPanel p = new JPanel(new BorderLayout(0, 4));
         p.setBackground(UIFactory.XP_BG);
         p.setBorder(new EmptyBorder(8, 4, 8, 8));
 
-        // Barra de busca
+        
         JPanel barBusca = new JPanel(new BorderLayout(6, 0));
         barBusca.setBackground(UIFactory.XP_PANEL_BG);
         barBusca.setBorder(BorderFactory.createCompoundBorder(
@@ -250,7 +246,7 @@ public class ClientePanel extends JPanel {
         ico.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
         ico.setBorder(new EmptyBorder(0, 0, 0, 4));
 
-        // Hint text (placeholder)
+        
         tfBusca.putClientProperty("placeholder", placeholder);
         tfBusca.setFont(UIFactory.FONT_NORMAL);
         tfBusca.setBorder(BorderFactory.createCompoundBorder(
@@ -265,13 +261,13 @@ public class ClientePanel extends JPanel {
         barBusca.add(btnLimpar, BorderLayout.EAST);
         p.add(barBusca, BorderLayout.NORTH);
 
-        // Contador de resultados
+        
         JLabel lblContador = new JLabel(" ");
         lblContador.setFont(new Font("Tahoma", Font.ITALIC, 10));
         lblContador.setForeground(new Color(100, 100, 100));
         lblContador.setBorder(new EmptyBorder(0, 4, 0, 0));
 
-        // Atualiza contador quando model muda
+        
         tabela.getModel().addTableModelListener(e2 -> {
             int n = tabela.getRowCount();
             lblContador.setText(n == 0 ? "Nenhum resultado." : n + " registro(s)");
@@ -288,7 +284,7 @@ public class ClientePanel extends JPanel {
         return p;
     }
 
-    /** Cria um JTextField que dispara a ação a cada tecla digitada. */
+    
     private JTextField buildBuscaField(java.util.function.Consumer<String> onSearch) {
         JTextField tf = UIFactory.styledField("");
         tf.getDocument().addDocumentListener(new DocumentListener() {
@@ -296,12 +292,12 @@ public class ClientePanel extends JPanel {
             public void removeUpdate(DocumentEvent e)  { SwingUtilities.invokeLater(() -> onSearch.accept(tf.getText())); }
             public void changedUpdate(DocumentEvent e) { SwingUtilities.invokeLater(() -> onSearch.accept(tf.getText())); }
         });
-        // Enter também aciona busca
+        
         tf.addActionListener(e -> onSearch.accept(tf.getText()));
         return tf;
     }
 
-    // ── Filtros (disparam a busca no service) ─────────────────────────────────
+    
 
     private void filtrarPF(String termo) {
         pfModel.setRowCount(0);
@@ -324,7 +320,7 @@ public class ClientePanel extends JPanel {
                 fornModel.addRow(new Object[]{ f.getId(), f.getRazaoSocial(), n(f.getCnpj()), n(f.getTelefone()), n(f.getCidade()) }));
     }
 
-    // ── Barra de botões únicos ────────────────────────────────────────────────
+    
 
     private JPanel buildButtonBar() {
         JPanel bar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 6));
@@ -356,7 +352,7 @@ public class ClientePanel extends JPanel {
         return bar;
     }
 
-    // ── Botões únicos → delegam para a aba ativa ──────────────────────────────
+    
 
     private void novo() {
         switch (formTabs.getSelectedIndex()) {
@@ -390,7 +386,7 @@ public class ClientePanel extends JPanel {
         }
     }
 
-    // ── Ações PF ──────────────────────────────────────────────────────────────
+    
 
     private void limparPF() {
         idPFSel = null;
@@ -442,7 +438,7 @@ public class ClientePanel extends JPanel {
         }
     }
 
-    // ── Ações PJ ──────────────────────────────────────────────────────────────
+    
 
     private void limparPJ() {
         idPJSel = null;
@@ -480,7 +476,7 @@ public class ClientePanel extends JPanel {
         }
     }
 
-    // ── Ações Fornecedor ──────────────────────────────────────────────────────
+    
 
     private void limparFornecedor() {
         idFSel = null;
@@ -518,12 +514,12 @@ public class ClientePanel extends JPanel {
         }
     }
 
-    // ── Reload ────────────────────────────────────────────────────────────────
+    
 
     public void reloadTable() { reloadPF(); reloadPJ(); reloadFornecedor(); }
 
     private void reloadPF() {
-        // Respeitando o filtro atual se houver um termo digitado
+        
         String termo = tfBuscaPF != null ? tfBuscaPF.getText() : "";
         pfModel.setRowCount(0);
         services.clientes().buscarPF(termo).forEach(c ->
@@ -544,7 +540,7 @@ public class ClientePanel extends JPanel {
                 fornModel.addRow(new Object[]{ f.getId(), f.getRazaoSocial(), n(f.getCnpj()), n(f.getTelefone()), n(f.getCidade()) }));
     }
 
-    // ── Preencher formulários ─────────────────────────────────────────────────
+    
 
     private void preencherPF(Long id) {
         services.clientes().buscarPFPorId(id).ifPresent(c -> {
@@ -587,7 +583,7 @@ public class ClientePanel extends JPanel {
         });
     }
 
-    // ── Builders de model ─────────────────────────────────────────────────────
+    
 
     private Endereco buildEndereco() {
         Endereco e = new Endereco();
@@ -624,7 +620,7 @@ public class ClientePanel extends JPanel {
         return f;
     }
 
-    // ── Busca CEP e CNPJ ─────────────────────────────────────────────────────
+    
 
     private void buscarCep(JTextField tfC, JTextField tfL, JTextField tfB,
                            JTextField tfCid, JTextField tfU) {
@@ -680,7 +676,7 @@ public class ClientePanel extends JPanel {
         ag.setVisible(true);
     }
 
-    // ── Helpers UI ────────────────────────────────────────────────────────────
+    
 
     private JPanel form(String titulo) {
         JPanel p = new JPanel(new GridBagLayout());

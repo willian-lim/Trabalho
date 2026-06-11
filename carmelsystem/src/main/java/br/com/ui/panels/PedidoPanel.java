@@ -49,7 +49,7 @@ public class PedidoPanel extends JPanel {
     public void reloadCombos() {}
     public void reloadPedidos() { limparFormulario(); }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Novo Pedido  [Tab = avançar campo · Enter = confirmar lista · F5 = atualizar · 📂 Reabrir = editar pedido pendente]"), BorderLayout.NORTH);
@@ -61,7 +61,7 @@ public class PedidoPanel extends JPanel {
         JPanel main = new JPanel(new BorderLayout(0, 0));
         main.setBackground(UIFactory.XP_BG);
 
-        // ── Seção Cliente ─────────────────────────────────────────────────────
+        
         JPanel secCliente = new JPanel(new GridBagLayout());
         secCliente.setBackground(UIFactory.XP_BG);
         secCliente.setBorder(BorderFactory.createCompoundBorder(
@@ -86,7 +86,7 @@ public class PedidoPanel extends JPanel {
         gc.gridx = 2; gc.weightx = 0;
         secCliente.add(btnBuscarCliente, gc);
 
-        // ── Seção Produto ─────────────────────────────────────────────────────
+        
         JPanel secProduto = new JPanel(new GridBagLayout());
         secProduto.setBackground(UIFactory.XP_BG);
         secProduto.setBorder(BorderFactory.createCompoundBorder(
@@ -102,7 +102,7 @@ public class PedidoPanel extends JPanel {
         gp.insets = new Insets(3, 4, 3, 4);
         gp.fill = GridBagConstraints.HORIZONTAL;
 
-        // Linha 0 — Produto
+        
         gp.gridx = 0; gp.gridy = 0; gp.weightx = 0;
         secProduto.add(UIFactory.labelLight("Produto:"), gp);
         gp.gridx = 1; gp.weightx = 1;
@@ -112,7 +112,7 @@ public class PedidoPanel extends JPanel {
         gp.gridx = 2; gp.weightx = 0;
         secProduto.add(btnBuscarProduto, gp);
 
-        // Linha 1 — Qtd
+        
         gp.gridx = 0; gp.gridy = 1; gp.weightx = 0;
         secProduto.add(UIFactory.labelLight("Qtd:"), gp);
         gp.gridx = 1; gp.weightx = 1;
@@ -123,7 +123,7 @@ public class PedidoPanel extends JPanel {
         gp.gridx = 2; gp.weightx = 0;
         secProduto.add(btnAdicionar, gp);
 
-        // Linha 2 — Cód. Barras
+        
         gp.gridx = 0; gp.gridy = 2; gp.weightx = 0;
         secProduto.add(UIFactory.labelLight("Cód. Barras:"), gp);
         gp.gridx = 1; gp.weightx = 1;
@@ -132,7 +132,7 @@ public class PedidoPanel extends JPanel {
         gp.gridx = 2; gp.weightx = 0;
         secProduto.add(btnAddBarras, gp);
 
-        // Linha 3 — Preço (editável)
+        
         gp.gridx = 0; gp.gridy = 3; gp.weightx = 0;
         JLabel lblPreco = UIFactory.labelLight("Preço (R$):");
         lblPreco.setForeground(new Color(0, 84, 166));
@@ -145,21 +145,21 @@ public class PedidoPanel extends JPanel {
         gp.gridx = 2; gp.weightx = 0;
         secProduto.add(lblPrecoHint, gp);
 
-        // Linha 4 — Obs
+        
         gp.gridx = 0; gp.gridy = 4; gp.weightx = 0;
         secProduto.add(UIFactory.labelLight("Obs:"), gp);
         gp.gridx = 1; gp.gridwidth = 2; gp.weightx = 1;
         secProduto.add(tfObs, gp);
         gp.gridwidth = 1;
 
-        // ── Topo (Cliente + Produto) ──────────────────────────────────────────
+        
         JPanel topo = new JPanel(new BorderLayout(0, 4));
         topo.setBackground(UIFactory.XP_BG);
         topo.setBorder(new EmptyBorder(6, 8, 4, 8));
         topo.add(secCliente, BorderLayout.NORTH);
         topo.add(secProduto, BorderLayout.CENTER);
 
-        // ── Tabela Itens Adicionados ──────────────────────────────────────────
+        
         JPanel secItens = new JPanel(new BorderLayout(0, 4));
         secItens.setBackground(UIFactory.XP_BG);
         secItens.setBorder(BorderFactory.createCompoundBorder(
@@ -200,7 +200,7 @@ public class PedidoPanel extends JPanel {
         scrollItens.setBorder(BorderFactory.createLineBorder(new Color(172, 168, 153)));
         secItens.add(scrollItens, BorderLayout.CENTER);
 
-        // Rodapé da tabela
+        
         JPanel rodItens = new JPanel(new BorderLayout());
         rodItens.setBackground(new Color(212, 208, 200));
         rodItens.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(172, 168, 153)));
@@ -227,7 +227,7 @@ public class PedidoPanel extends JPanel {
 
         secItens.add(rodItens, BorderLayout.SOUTH);
 
-        // ── Botões principais ─────────────────────────────────────────────────
+        
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 6));
         btnPanel.setBackground(new Color(212, 208, 200));
         btnPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(172, 168, 153)));
@@ -258,7 +258,7 @@ public class PedidoPanel extends JPanel {
         btnPanel.add(btnSalvar);
         btnPanel.add(btnRemoverRod);
 
-        // ── Montagem final ────────────────────────────────────────────────────
+        
         JPanel center = new JPanel(new BorderLayout(0, 0));
         center.setBackground(UIFactory.XP_BG);
 
@@ -273,7 +273,7 @@ public class PedidoPanel extends JPanel {
 
         main.add(center, BorderLayout.CENTER);
 
-        // ── Atalhos de teclado ────────────────────────────────────────────────
+        
         itensTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) removerItem();
@@ -297,7 +297,7 @@ public class PedidoPanel extends JPanel {
         return bar;
     }
 
-    // ── Ações ─────────────────────────────────────────────────────────────────
+    
 
     private void buscarCliente() {
         String filtro = tfCliente.getText().trim().toLowerCase();
@@ -544,7 +544,7 @@ public class PedidoPanel extends JPanel {
         try {
             var pedido = services.pedidos().buscarComItens(pedidoId);
 
-            // Apenas PENDENTE pode ser reaberto — outros status não devem ser tocados
+            
             if (pedido.getStatus() != br.carmel.model.StatusPedido.PENDENTE) {
                 String motivo = switch (pedido.getStatus()) {
                     case CONFIRMADO    -> "já foi confirmado (nota emitida). Cancele a nota primeiro se precisar alterar.";
@@ -560,7 +560,7 @@ public class PedidoPanel extends JPanel {
                 return;
             }
 
-            // Montar preview para confirmação
+            
             int conf = JOptionPane.showConfirmDialog(this,
                     "Pedido #" + pedidoId + " — Cliente: " + pedido.getCliente().getNome()
                             + "\nTotal: R$ " + String.format("%.2f", pedido.getValorTotal())
@@ -569,17 +569,17 @@ public class PedidoPanel extends JPanel {
                     "Confirmar Reabertura", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (conf != JOptionPane.YES_OPTION) return;
 
-            // Cancelar pedido original via service (respeita regras de negócio)
+            
             services.pedidos().cancelarPedido(pedidoId);
 
-            // Montar observação respeitando o limite de 500 chars do service
+            
             String prefixo = "[Reaberto do pedido #" + pedidoId + "] ";
             String obsOriginal = pedido.getObservacoes() != null ? pedido.getObservacoes() : "";
             String obsNova = (prefixo + obsOriginal).length() <= 500
                     ? prefixo + obsOriginal
                     : (prefixo + obsOriginal).substring(0, 500);
 
-            // Carregar dados no formulário
+            
             limparFormulario();
             clienteSelecionadoId = pedido.getCliente().getId();
             tfCliente.setText(pedido.getCliente().getNome());
@@ -618,7 +618,7 @@ public class PedidoPanel extends JPanel {
         }
     }
 
-    // ── Classe interna de rascunho ─────────────────────────────────────────────
+    
 
     private static class ItemRascunho {
         Long produtoId;

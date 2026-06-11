@@ -3,10 +3,6 @@ package br.carmel.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-/**
- * Base para todos os repositórios.
- * Gerencia o ciclo de vida do EntityManager.
- */
 public abstract class BaseRepository {
 
     protected final EntityManagerFactory emf;

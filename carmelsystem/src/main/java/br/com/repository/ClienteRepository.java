@@ -13,7 +13,7 @@ public class ClienteRepository extends BaseRepository {
 
     public ClienteRepository(EntityManagerFactory emf) { super(emf); }
 
-    // ── Pessoa Física ──────────────────────────────────────────────────────────
+    
 
     public List<Cliente> buscarTodosPF() {
         EntityManager em = abrirEm();
@@ -24,10 +24,7 @@ public class ClienteRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /**
-     * Busca PF por nome (parcial, case-insensitive) ou CPF (parcial).
-     * Termo vazio retorna todos.
-     */
+    
     public List<Cliente> buscarPFPorTermo(String termo) {
         EntityManager em = abrirEm();
         try {
@@ -72,11 +69,11 @@ public class ClienteRepository extends BaseRepository {
         EntityManager em = abrirEm();
         try {
             em.getTransaction().begin();
-            // Garante que todos os endereços apontam de volta para o cliente
+            
             if (cliente.getEnderecos() != null)
                 cliente.getEnderecos().forEach(e -> { if (e.getCliente() == null) e.setCliente(cliente); });
             Cliente result = em.merge(cliente);
-            em.flush(); // força persistência dos filhos na mesma transação
+            em.flush(); 
             em.getTransaction().commit();
             return result;
         } catch (Exception e) { rollback(em); throw new RuntimeException(e.getMessage(), e); }
@@ -94,7 +91,7 @@ public class ClienteRepository extends BaseRepository {
         finally { fechar(em); }
     }
 
-    // ── Pessoa Jurídica ────────────────────────────────────────────────────────
+    
 
     public List<ClienteJuridico> buscarTodosPJ() {
         EntityManager em = abrirEm();
@@ -103,10 +100,7 @@ public class ClienteRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /**
-     * Busca PJ por razão social (parcial, case-insensitive), nome fantasia ou CNPJ (parcial).
-     * Termo vazio retorna todos.
-     */
+    
     public List<ClienteJuridico> buscarPJPorTermo(String termo) {
         EntityManager em = abrirEm();
         try {
@@ -153,7 +147,7 @@ public class ClienteRepository extends BaseRepository {
         finally { fechar(em); }
     }
 
-    // ── Fornecedor ─────────────────────────────────────────────────────────────
+    
 
     public List<Fornecedor> buscarTodosFornecedores() {
         EntityManager em = abrirEm();
@@ -162,10 +156,7 @@ public class ClienteRepository extends BaseRepository {
         } finally { fechar(em); }
     }
 
-    /**
-     * Busca Fornecedor por razão social (parcial, case-insensitive), nome fantasia ou CNPJ (parcial).
-     * Termo vazio retorna todos.
-     */
+    
     public List<Fornecedor> buscarFornecedorPorTermo(String termo) {
         EntityManager em = abrirEm();
         try {

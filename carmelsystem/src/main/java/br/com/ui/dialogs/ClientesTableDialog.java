@@ -10,9 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Diálogo que exibe a listagem de Clientes em tabela.
- */
 public class ClientesTableDialog extends JDialog {
 
     public ClientesTableDialog(Component parent, EntityManagerFactory emf) {

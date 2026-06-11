@@ -41,31 +41,26 @@ public class LicencaManager {
         public boolean podeUsar() { return status == Status.VALIDA; }
     }
 
-    // ── Normalização de chave (SEMPRE igual em todo o código) ─────────────────
+    
 
-    /**
-     * Remove hífens, espaços e qualquer padding da chave.
-     * É OBRIGATÓRIO usar este método antes de calcular o hash
-     * para garantir que o mesmo hash seja gerado sempre para a mesma chave,
-     * independente de como ela foi digitada/colada.
-     */
+    
     static String normalizarChave(String chaveFormatada) {
         return chaveFormatada
                 .replace(SEP_VISUAL, "")
                 .replaceAll("\\s+", "")
-                .replace("=", ""); // sem padding
+                .replace("=", ""); 
     }
 
-    // ── Data confiável via NTP ────────────────────────────────────────────────
+    
 
     static LocalDate obterHoje(LocalDate ultimaDataGravada) {
         LocalDate dataNtp = buscarDataNtp();
         if (dataNtp != null) return dataNtp;
 
-        // Sem internet: relógio local mas com anti-rollback
+        
         LocalDate hoje = LocalDate.now();
         if (ultimaDataGravada != null && hoje.isBefore(ultimaDataGravada)) {
-            return null; // rollback detectado sem internet → bloqueia
+            return null; 
         }
         return hoje;
     }
@@ -102,7 +97,7 @@ public class LicencaManager {
         return null;
     }
 
-    // ── Verificar licença ─────────────────────────────────────────────────────
+    
 
     public static ResultadoLicenca verificar() {
         Path arquivo = caminhoArquivo();
@@ -114,27 +109,27 @@ public class LicencaManager {
         return lerEValidar(arquivo);
     }
 
-    // ── Ativar nova chave ─────────────────────────────────────────────────────
+    
 
     public static boolean renovar(String chaveFormatada) {
         try {
-            // ── BARREIRA 1: se já existe licença no banco e o arquivo está
-            // corrompido/ausente, a mesma chave antiga NÃO pode ser reinserida.
-            // Qualquer tentativa de ativação quando há registro no banco
-            // só é permitida se a chave for NOVA (não registrada ainda).
-            // Isso é verificado na barreira 3 abaixo, mas precisamos
-            // garantir que o hash é sempre calculado da mesma forma. ──────────
+            
+            
+            
+            
+            
+            
 
-            // 1. Normalizar chave — SEMPRE com normalizarChave()
+            
             String chaveNorm = normalizarChave(chaveFormatada);
 
-            // 2. Restaurar padding para decodificação Base64
+            
             String chaveComPadding = chaveNorm;
             int resto = chaveComPadding.length() % 4;
             if (resto == 2) chaveComPadding += "==";
             else if (resto == 3) chaveComPadding += "=";
 
-            // 3. Decodificar Base64
+            
             byte[] decoded;
             try {
                 decoded = Base64.getDecoder().decode(chaveComPadding);
@@ -143,7 +138,7 @@ public class LicencaManager {
             }
             String conteudo = new String(decoded, StandardCharsets.UTF_8);
 
-            // 4. Separar campos
+            
             String[] partes = conteudo.split("\\|", 3);
             if (partes.length != 3) return false;
 
@@ -151,46 +146,46 @@ public class LicencaManager {
             String serialStr    = partes[1];
             String hmacRecebido = partes[2];
 
-            // 5. Verificar assinatura HMAC
+            
             String payload      = dataStr + SEP + serialStr;
             String hmacCurto    = hmac(payload + "CARMEL-LICENCA-V4").substring(0, 16);
             if (!hmacCurto.equals(hmacRecebido)) return false;
 
-            // 6. Verificar data via NTP
+            
             LocalDate hoje = obterHoje(null);
             if (hoje == null) throw new SemInternetException();
 
             LocalDate dataInicio = LocalDate.parse(dataStr, FMT);
             LocalDate expiracao  = dataInicio.plusDays(DIAS_VALIDADE);
 
-            // 7. Bloquear chave expirada (data NTP)
+            
             if (!hoje.isBefore(expiracao)) return false;
 
-            // ── BARREIRA PRINCIPAL: hash calculado com chaveNorm (sem hifens,
-            // sem espaços, sem padding) — mesma normalização sempre. ──────────
+            
+            
             String hashChave = sha256Hex(chaveNorm);
 
-            // 8. Verificar reutilização — usa hash normalizado
+            
             if (repositorio != null && repositorio.chaveJaUtilizada(hashChave)) {
                 throw new ChaveJaUtilizadaException();
             }
 
-            // ── BARREIRA EXTRA: se existe qualquer licença no banco mas
-            // o arquivo local está ausente/corrompido → alguém apagou o arquivo.
-            // Só permite ativar se a chave for genuinamente nova (não no banco).
-            // A verificação acima já cobre isso, mas se o banco está indisponível
-            // e o arquivo está corrompido, bloqueia por segurança. ─────────────
+            
+            
+            
+            
+            
             if (repositorio == null && Files.exists(caminhoArquivo())) {
-                // Sem banco mas arquivo existe e vai ser sobrescrito — permitido
+                
             }
 
-            // 9. Gravar arquivo local
+            
             gravarArquivo(caminhoArquivo(), dataInicio, hoje, serialStr);
 
-            // 10. Registrar no banco com hash normalizado
+            
             if (repositorio != null) {
                 Licenca licenca = new Licenca();
-                licenca.setHashChave(hashChave); // hash da chave normalizada
+                licenca.setHashChave(hashChave); 
                 licenca.setDataInicio(dataInicio);
                 licenca.setDataExpiracao(expiracao);
                 licenca.setAtivadaEm(LocalDateTime.now());
@@ -222,7 +217,7 @@ public class LicencaManager {
 
     public static int diasRestantes() { return verificar().diasRestantes(); }
 
-    // ── Leitura e validação do arquivo ────────────────────────────────────────
+    
 
     private static ResultadoLicenca lerEValidar(Path arquivo) {
         try {
@@ -243,11 +238,11 @@ public class LicencaManager {
             String    serialStr  = partes[2];
             LocalDate expiracao  = dataInicio.plusDays(DIAS_VALIDADE);
 
-            // Data confiável: NTP prioritário, fallback com anti-rollback
+            
             LocalDate hoje = obterHoje(ultimaData);
-            if (hoje == null) return corrompida(); // rollback sem internet
+            if (hoje == null) return corrompida(); 
 
-            // Consistência com banco
+            
             if (repositorio != null) {
                 Optional<Licenca> lb = repositorio.buscarMaisRecente();
                 if (lb.isPresent()) {
@@ -272,7 +267,7 @@ public class LicencaManager {
         }
     }
 
-    // ── Arquivo local ─────────────────────────────────────────────────────────
+    
 
     static void gravarArquivo(Path arquivo, LocalDate dataInicio, LocalDate ultimaData)
             throws Exception { gravarArquivo(arquivo, dataInicio, ultimaData, "0"); }
@@ -296,7 +291,7 @@ public class LicencaManager {
         return Path.of(System.getProperty("user.home"), ".config", "Carmel", "licenca.dat");
     }
 
-    // ── Criptografia ──────────────────────────────────────────────────────────
+    
 
     static String gerarFingerprint() {
         try {

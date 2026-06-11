@@ -23,7 +23,7 @@ public class PedidoService {
         this.produtoRepo = new ProdutoRepository(emf);
     }
 
-    // ── Consultas ─────────────────────────────────────────────────────────────
+    
 
     public List<Pedido> listarPendentes() {
         return pedidoRepo.buscarPorStatus(StatusPedido.PENDENTE);
@@ -39,7 +39,7 @@ public class PedidoService {
                 .orElseThrow(() -> new RegraNegocioException("Pedido #" + id + " não encontrado."));
     }
 
-    // ── Criar Pedido Pendente ─────────────────────────────────────────────────
+    
 
     public Pedido criarPedidoPendente(Long clienteId, List<ItemPedidoDTO> itens, String observacoes) {
         if (itens == null || itens.isEmpty())
@@ -72,7 +72,7 @@ public class PedidoService {
                 item.setProduto(produto);
                 item.setQuantidade(dto.quantidade());
 
-                // Usa o preço informado no DTO; se ausente, usa o preço cadastrado no produto
+                
                 BigDecimal preco = (dto.precoUnitario() != null
                         && dto.precoUnitario().compareTo(BigDecimal.ZERO) > 0)
                         ? dto.precoUnitario()
@@ -98,7 +98,7 @@ public class PedidoService {
         } finally { em.close(); }
     }
 
-    // ── Emitir Nota ───────────────────────────────────────────────────────────
+    
 
     public static class ResultadoEmissao {
         public Pagamento pagamento;
@@ -181,7 +181,7 @@ public class PedidoService {
         } finally { em.close(); }
     }
 
-    // ── Cancelar ──────────────────────────────────────────────────────────────
+    
 
     public void cancelarPedido(Long pedidoId) {
         Pedido pedido = pedidoRepo.buscarComItens(pedidoId)
@@ -230,15 +230,11 @@ public class PedidoService {
         } finally { em.close(); }
     }
 
-    // ── DTO ───────────────────────────────────────────────────────────────────
+    
 
-    /**
-     * @param produtoId     ID do produto
-     * @param quantidade    Quantidade
-     * @param precoUnitario Preço de venda (null = usa o preço cadastrado no produto)
-     */
+    
     public record ItemPedidoDTO(Long produtoId, int quantidade, BigDecimal precoUnitario) {
-        /** Atalho: usa o preço cadastrado no produto */
+        
         public ItemPedidoDTO(Long produtoId, int quantidade) {
             this(produtoId, quantidade, null);
         }

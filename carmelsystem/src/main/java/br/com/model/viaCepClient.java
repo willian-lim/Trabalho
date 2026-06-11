@@ -4,7 +4,7 @@ import org.apache.http.client.fluent.Request;
 import com.google.gson.Gson;
 public class viaCepClient {
     public static Endereco buscarCep(String cep) throws Exception {
-        String url = "https://viacep.com.br/ws/" + cep + "/json/";
+        String url = "https:
 
         String jsonResponse = Request.Get(url)
                 .connectTimeout(1000)

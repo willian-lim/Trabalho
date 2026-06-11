@@ -7,24 +7,13 @@ import jakarta.persistence.NoResultException;
 
 import java.util.Optional;
 
-/**
- * Repositório responsável por persistir e consultar licenças ativadas.
- *
- * Todas as operações são transacionais e isoladas (abre/fecha EntityManager
- * por chamada), seguindo o padrão do restante do projeto.
- */
 public class LicencaRepository extends BaseRepository {
 
     public LicencaRepository(EntityManagerFactory emf) {
         super(emf);
     }
 
-    /**
-     * Verifica se uma chave (identificada pelo seu hash SHA-256) já foi usada.
-     *
-     * @param hashChave SHA-256 da chave bruta em hexadecimal
-     * @return true se já existe registro desta chave no banco
-     */
+    
     public boolean chaveJaUtilizada(String hashChave) {
         EntityManager em = abrirEm();
         try {
@@ -40,11 +29,7 @@ public class LicencaRepository extends BaseRepository {
         }
     }
 
-    /**
-     * Retorna a licença mais recente registrada no banco (a ativa atual).
-     *
-     * @return Optional com a licença de maior id, ou vazio se não houver nenhuma
-     */
+    
     public Optional<Licenca> buscarMaisRecente() {
         EntityManager em = abrirEm();
         try {
@@ -60,11 +45,7 @@ public class LicencaRepository extends BaseRepository {
         }
     }
 
-    /**
-     * Persiste uma nova licença ativada no banco.
-     *
-     * @param licenca objeto preenchido com todos os campos obrigatórios
-     */
+    
     public void salvar(Licenca licenca) {
         EntityManager em = abrirEm();
         try {

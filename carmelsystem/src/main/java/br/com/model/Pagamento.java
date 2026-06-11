@@ -7,10 +7,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * Registro de pagamento vinculado a um pedido.
- * Um pedido pode ter um pagamento associado.
- */
 @Getter
 @Setter
 @Entity
@@ -35,7 +31,7 @@ public class Pagamento {
     @Column(name = "desconto", precision = 10, scale = 2)
     private BigDecimal desconto = BigDecimal.ZERO;
 
-    /** Valor final após desconto. É o valor cobrado de fato. */
+    
     @Column(name = "valor_final", precision = 10, scale = 2)
     private BigDecimal valorFinal;
 

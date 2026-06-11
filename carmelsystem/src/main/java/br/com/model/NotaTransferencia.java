@@ -9,10 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Nota de transferência interna de estoque (não fiscal).
- * Pode ser entrada (recebimento de fornecedor) ou saída (transferência/ajuste).
- */
 @Getter @Setter
 @Entity
 @Table(name = "nota_transferencia")
@@ -21,14 +17,14 @@ public class NotaTransferencia {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** ENTRADA = adiciona estoque | SAIDA = retira estoque */
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private TipoNota tipo;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
-    private Fornecedor fornecedor; // opcional — pode ser transferência interna
+    private Fornecedor fornecedor; 
 
     @Column(name = "data_nota", nullable = false)
     private LocalDateTime dataNota;
@@ -37,7 +33,7 @@ public class NotaTransferencia {
     private String observacoes;
 
     @Column(name = "numero_nota", length = 50)
-    private String numeroNota; // número de referência livre
+    private String numeroNota; 
 
     @OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemNota> itens = new ArrayList<>();

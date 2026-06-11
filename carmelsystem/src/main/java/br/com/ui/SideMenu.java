@@ -41,11 +41,11 @@ public class SideMenu extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        // Fundo do topbar — marrom escuro quente
+        
         g2.setPaint(new GradientPaint(0, 0, new Color(52, 38, 18),
                 getWidth(), 0, new Color(68, 50, 24)));
         g2.fillRect(0, 0, getWidth(), getHeight());
-        // Linha dourada na base
+        
         g2.setColor(new Color(160, 110, 30, 180));
         g2.setStroke(new BasicStroke(1.5f));
         g2.drawLine(0, getHeight()-1, getWidth(), getHeight()-1);
@@ -53,7 +53,7 @@ public class SideMenu extends JPanel {
     }
 
     private void build(NavActions nav) {
-        // ── Linha 1: Logo + Usuário ───────────────────────────────────────────
+        
         JPanel topRow = new JPanel(new BorderLayout()) {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -69,7 +69,7 @@ public class SideMenu extends JPanel {
         topRow.setPreferredSize(new Dimension(0, 48));
         topRow.setBorder(new EmptyBorder(0, 16, 0, 16));
 
-        // Logo
+        
         JLabel logo = new JLabel("⬡  CARMEL") {
             float pulse = 0; boolean up = true;
             {
@@ -85,7 +85,7 @@ public class SideMenu extends JPanel {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                // Glow dourado pulsante
+                
                 Color glow = new Color(200, 140, 40, (int)(30 + pulse * 50));
                 g2.setColor(glow);
                 g2.setFont(getFont());
@@ -96,7 +96,7 @@ public class SideMenu extends JPanel {
                     for (int dy = -2; dy <= 2; dy++)
                         if (dx != 0 || dy != 0)
                             g2.drawString(getText(), tx+dx, ty+dy);
-                // Texto dourado
+                
                 g2.setColor(new Color(
                         (int)(210 + pulse * 30),
                         (int)(160 + pulse * 30),
@@ -118,7 +118,7 @@ public class SideMenu extends JPanel {
         logoBox.add(logo, BorderLayout.NORTH);
         logoBox.add(sub, BorderLayout.SOUTH);
 
-        // Usuário + sair
+        
         JPanel rightBox = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         rightBox.setOpaque(false);
 
@@ -141,7 +141,7 @@ public class SideMenu extends JPanel {
         topRow.add(logoBox,  BorderLayout.WEST);
         topRow.add(rightBox, BorderLayout.EAST);
 
-        // ── Linha 2: Navegação ────────────────────────────────────────────────
+        
         JPanel navRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         navRow.setOpaque(false);
         navRow.setPreferredSize(new Dimension(0, 48));

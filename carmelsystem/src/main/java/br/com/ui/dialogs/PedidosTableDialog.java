@@ -13,15 +13,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Diálogo que lista todos os Pedidos e exibe os itens do pedido
- * selecionado em um painel de detalhes.
- */
 public class PedidosTableDialog extends JDialog {
 
     private final EntityManagerFactory emf;
 
-    // Tabela de detalhes (itens do pedido selecionado)
+    
     private final DefaultTableModel detailModel = new DefaultTableModel(
             new String[]{"Produto", "Código de Barras", "Preço Unit.", "Quantidade", "Subtotal"}, 0) {
         public boolean isCellEditable(int r, int c) { return false; }
@@ -43,14 +39,14 @@ public class PedidosTableDialog extends JDialog {
         main.setBackground(new Color(8, 8, 10));
         main.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        // ── Título ────────────────────────────────────────────────────────────
+        
         JLabel title = new JLabel("Pedidos Realizados", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         title.setForeground(new Color(200, 220, 255));
         title.setBorder(new EmptyBorder(0, 0, 10, 0));
         main.add(title, BorderLayout.NORTH);
 
-        // ── Tabela principal de pedidos ───────────────────────────────────────
+        
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"ID", "Cliente", "Data", "Status", "Valor Total"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -63,16 +59,16 @@ public class PedidosTableDialog extends JDialog {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 70)));
         main.add(scrollPane, BorderLayout.CENTER);
 
-        // ── Painel de detalhes ────────────────────────────────────────────────
+        
         main.add(buildDetailPanel(), BorderLayout.SOUTH);
 
-        // ── Carregar primeiro pedido automaticamente ──────────────────────────
+        
         if (pedidos != null && !pedidos.isEmpty()) {
             table.setRowSelectionInterval(0, 0);
             loadDetailForPedido(pedidos.get(0).getId());
         }
 
-        // ── Listener de seleção ───────────────────────────────────────────────
+        
         final List<Pedido> finalPedidos = pedidos;
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -83,7 +79,7 @@ public class PedidosTableDialog extends JDialog {
             }
         });
 
-        // ── Botão fechar ──────────────────────────────────────────────────────
+        
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.setOpaque(false);
         btnPanel.add(UIFactory.bigActionButton("Fechar", e -> dispose()));
@@ -92,7 +88,7 @@ public class PedidosTableDialog extends JDialog {
         add(main);
     }
 
-    // ── Carga de dados ────────────────────────────────────────────────────────
+    
 
     private List<Pedido> loadPedidos(DefaultTableModel model) {
         List<Pedido> pedidos = null;
@@ -160,7 +156,7 @@ public class PedidosTableDialog extends JDialog {
         }
     }
 
-    // ── Construtores de componentes ───────────────────────────────────────────
+    
 
     private JPanel buildDetailPanel() {
         JPanel panel = new JPanel(new BorderLayout(8, 8));

@@ -13,10 +13,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-/**
- * Relatório de Estoque.
- * Delegado ao RelatorioService.
- */
 public class RelatorioEstoquePanel extends JPanel {
 
     private final ServiceLocator services;
@@ -77,7 +73,7 @@ public class RelatorioEstoquePanel extends JPanel {
     private void build() {
         add(UIFactory.xpTitleBar("Relatório de Estoque"), BorderLayout.NORTH);
 
-        // Cards de resumo
+        
         JPanel cards = new JPanel(new GridLayout(1, 4, 8, 0));
         cards.setBackground(UIFactory.XP_BG);
         cards.setBorder(new EmptyBorder(8, 8, 4, 8));
@@ -93,7 +89,7 @@ public class RelatorioEstoquePanel extends JPanel {
         cards.add(card("Zerado / Baixo (≤5)", lblZerado,        new Color(180, 0, 0)));
         add(cards, BorderLayout.NORTH);
 
-        // Tabela
+        
         tableModel = new DefaultTableModel(
                 new String[]{"ID","Nome","Estoque","Preço Venda","Preço Custo","Preço Médio","Margem","Valor Estoque"}, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -149,7 +145,7 @@ public class RelatorioEstoquePanel extends JPanel {
         scroll.setBorder(BorderFactory.createLineBorder(new Color(172, 168, 153)));
         add(scroll, BorderLayout.CENTER);
 
-        // Rodapé
+        
         JPanel rodape = new JPanel(new BorderLayout(8, 0));
         rodape.setBackground(new Color(212, 208, 200));
         rodape.setBorder(BorderFactory.createCompoundBorder(

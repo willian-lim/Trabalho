@@ -17,15 +17,11 @@ import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * Painel de Cadastro de Produtos — com aba "Impressão 3D".
- * Layout dividido: formulário/abas à esquerda, tabela à direita.
- */
 public class ProdutoPanel extends JPanel {
 
     private final ServiceLocator services;
 
-    // ── Campos principais ─────────────────────────────────────────────────────
+    
     private final JTextField tfNome  = UIFactory.styledField("");
     private final JTextField tfVenda = UIFactory.styledField("");
     private final JTextField tfCusto = UIFactory.styledField("");
@@ -36,7 +32,7 @@ public class ProdutoPanel extends JPanel {
     private final JLabel lblPrecoMedio = new JLabel("—");
     private final JLabel lblMargem    = new JLabel("—");
 
-    // ── Campos Impressão 3D ───────────────────────────────────────────────────
+    
     private final JTextField tf3dFilamentoPorKg  = UIFactory.styledField("");
     private final JTextField tf3dGramas          = UIFactory.styledField("");
     private final JTextField tf3dHoras           = UIFactory.styledField("");
@@ -54,7 +50,7 @@ public class ProdutoPanel extends JPanel {
     private JTable table;
     private Long idSelecionado = null;
 
-    // ── Campos de busca ───────────────────────────────────────────────────────
+    
     private final JTextField tfBuscaNome    = UIFactory.styledField("");
     private final JTextField tfBuscaPrecoMin = UIFactory.styledField("");
     private final JTextField tfBuscaPrecoMax = UIFactory.styledField("");
@@ -67,7 +63,7 @@ public class ProdutoPanel extends JPanel {
         build();
     }
 
-    // ── Montagem ──────────────────────────────────────────────────────────────
+    
 
     private void build() {
         add(UIFactory.xpTitleBar("Cadastro de Produtos"), BorderLayout.NORTH);
@@ -80,7 +76,7 @@ public class ProdutoPanel extends JPanel {
         add(buildButtonBar(), BorderLayout.SOUTH);
     }
 
-    // ── Painel esquerdo com abas ──────────────────────────────────────────────
+    
 
     private JPanel buildLeftPanel() {
         JPanel outer = new JPanel(new BorderLayout());
@@ -98,7 +94,7 @@ public class ProdutoPanel extends JPanel {
         return outer;
     }
 
-    // ── Aba 1: Dados do Produto ───────────────────────────────────────────────
+    
 
     private JPanel buildFormPanel() {
         JPanel form = new JPanel(new GridBagLayout());
@@ -115,12 +111,12 @@ public class ProdutoPanel extends JPanel {
         addRow(form, c, row++, "Preço de Venda (R$):", tfVenda);
         addRow(form, c, row++, "Preço de Custo (R$):", tfCusto);
 
-        // Preço médio — somente leitura
+        
         lblPrecoMedio.setFont(UIFactory.FONT_BOLD);
         lblPrecoMedio.setForeground(UIFactory.W11_ACCENT);
         addRow(form, c, row++, "Preço Médio (R$):", lblPrecoMedio);
 
-        // Margem calculada
+        
         lblMargem.setFont(UIFactory.FONT_BOLD);
         lblMargem.setForeground(UIFactory.W11_SUCCESS);
         addRow(form, c, row++, "Margem:", lblMargem);
@@ -142,7 +138,7 @@ public class ProdutoPanel extends JPanel {
         tfVenda.addFocusListener(fl(calcMargem));
         tfCusto.addFocusListener(fl(calcMargem));
 
-        // Estoque + botão
+        
         JPanel estoqueRow = new JPanel(new BorderLayout(6, 0));
         estoqueRow.setOpaque(false);
         lblEstoque.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -166,7 +162,7 @@ public class ProdutoPanel extends JPanel {
         return wrapper;
     }
 
-    // ── Aba 2: Impressão 3D ───────────────────────────────────────────────────
+    
 
     private JPanel build3DPanel() {
         JPanel main = new JPanel(new BorderLayout(0, 8));
@@ -182,7 +178,7 @@ public class ProdutoPanel extends JPanel {
 
         int row = 0;
 
-        // ── Filamento ─────────────────────────────────────────────────────────
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2; c.weightx = 1;
         form.add(sectionLabel("🧵  FILAMENTO"), c);
         row++;
@@ -190,18 +186,18 @@ public class ProdutoPanel extends JPanel {
         addRow3d(form, c, row++, "Preço do kg do filamento (R$):", tf3dFilamentoPorKg);
         addRow3d(form, c, row++, "Material usado na impressão (g):", tf3dGramas);
 
-        // Custo filamento (readonly)
+        
         lbl3dCustoFilamento.setForeground(UIFactory.W11_TEXT_SEC);
         lbl3dCustoFilamento.setFont(UIFactory.FONT_NORMAL);
         addRow3d(form, c, row++, "Custo do filamento:", lbl3dCustoFilamento);
 
-        // ── Fatiador ─────────────────────────────────────────────────────────
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2;
         form.add(sectionLabel("⏱️  FATIADOR"), c);
         row++;
         addRow3d(form, c, row++, "Duração da impressão (h):", tf3dHoras);
 
-        // ── Energia ──────────────────────────────────────────────────────────
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2;
         form.add(sectionLabel("⚡  ENERGIA"), c);
         row++;
@@ -227,7 +223,7 @@ public class ProdutoPanel extends JPanel {
         lbl3dCustoEnergia.setFont(UIFactory.FONT_NORMAL);
         addRow3d(form, c, row++, "Custo de energia:", lbl3dCustoEnergia);
 
-        // ── Mão de Obra ───────────────────────────────────────────────────────
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2;
         form.add(sectionLabel("👷  MÃO DE OBRA"), c);
         row++;
@@ -252,7 +248,7 @@ public class ProdutoPanel extends JPanel {
         lbl3dCustoMaoDeObra.setFont(UIFactory.FONT_NORMAL);
         addRow3d(form, c, row++, "Custo mão de obra:", lbl3dCustoMaoDeObra);
 
-        // ── Lucro ─────────────────────────────────────────────────────────────
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2;
         form.add(sectionLabel("💰  LUCRO"), c);
         row++;
@@ -273,14 +269,14 @@ public class ProdutoPanel extends JPanel {
         form.add(margemWrap, c);
         row++;
 
-        // espaçador
+        
         c.gridx = 0; c.gridy = row; c.gridwidth = 2; c.weighty = 1.0;
         form.add(Box.createVerticalGlue(), c);
 
         main.add(form, BorderLayout.CENTER);
         main.add(buildResultadoPanel(), BorderLayout.SOUTH);
 
-        // Listeners de cálculo automático
+        
         FocusAdapter calcListener = new FocusAdapter() {
             @Override public void focusLost(FocusEvent e) { calcular3D(); }
         };
@@ -302,12 +298,12 @@ public class ProdutoPanel extends JPanel {
                 UIFactory.groupBorder("📊  Resultado da Calculadora"),
                 new EmptyBorder(8, 8, 8, 8)));
 
-        // Custo total
+        
         JPanel custoCard = buildResultCard("Custo Total", lbl3dCustoTotal, UIFactory.W11_TEXT_SEC);
-        // Preço de venda sugerido
+        
         JPanel vendaCard = buildResultCard("Preço de Venda Sugerido", lbl3dPrecoVenda, UIFactory.W11_ACCENT);
 
-        // Botão aplicar ao produto
+        
         JButton btnAplicar = UIFactory.primaryButton("Aplicar ao Produto", e -> aplicarCalculo3D());
         btnAplicar.setPreferredSize(new Dimension(160, 32));
         JPanel botaoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 6));
@@ -340,9 +336,9 @@ public class ProdutoPanel extends JPanel {
         return card;
     }
 
-    // ── Calculadora 3D — delega ao ProdutoService ─────────────────────────────
+    
 
-    /** Último resultado calculado — usado pelo botão "Aplicar ao Produto". */
+    
     private ProdutoService.Impressao3DResultado ultimo3DResultado = null;
 
     private void calcular3D() {
@@ -357,7 +353,7 @@ public class ProdutoPanel extends JPanel {
                     parseFieldDouble(tf3dMargem)
             );
 
-            // Toda a lógica fica no serviço
+            
             ultimo3DResultado = services.produtos().calcularImpressao3D(input);
 
             lbl3dCustoFilamento.setText(String.format("R$ %.2f", ultimo3DResultado.custoFilamento()));
@@ -369,7 +365,7 @@ public class ProdutoPanel extends JPanel {
         } catch (RegraNegocioException ex) {
             showError(ex.getMessage());
         } catch (Exception ex) {
-            // Campo ainda vazio/incompleto — aguarda o usuário terminar de preencher
+            
         }
     }
 
@@ -387,14 +383,14 @@ public class ProdutoPanel extends JPanel {
                 "Calculadora 3D", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Lê um JTextField como double; retorna 0.0 se vazio. Sem lógica de negócio. */
+    
     private double parseFieldDouble(JTextField tf) {
         String text = tf.getText();
         if (text == null || text.isBlank()) return 0.0;
         return Double.parseDouble(text.trim().replace(",", "."));
     }
 
-    // ── Painel direito: tabela ────────────────────────────────────────────────
+    
 
     private JPanel buildTablePanel() {
         JPanel p = new JPanel(new BorderLayout(0, 4));
@@ -407,7 +403,7 @@ public class ProdutoPanel extends JPanel {
         lbl.setBorder(new EmptyBorder(0, 0, 4, 0));
         p.add(lbl, BorderLayout.NORTH);
 
-        // ── Painel de busca ───────────────────────────────────────────────────
+        
         JPanel searchPanel = new JPanel(new GridBagLayout());
         searchPanel.setBackground(UIFactory.W11_SURFACE);
         searchPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -423,14 +419,14 @@ public class ProdutoPanel extends JPanel {
         sc.insets = new Insets(3, 4, 3, 4);
         sc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Linha 0: Nome
+        
         sc.gridx = 0; sc.gridy = 0; sc.weightx = 0;
         searchPanel.add(UIFactory.labelLight("Nome:"), sc);
         sc.gridx = 1; sc.weightx = 1; sc.gridwidth = 3;
         searchPanel.add(tfBuscaNome, sc);
         sc.gridwidth = 1;
 
-        // Linha 1: Preço mín / máx
+        
         sc.gridx = 0; sc.gridy = 1; sc.weightx = 0;
         searchPanel.add(UIFactory.labelLight("Preço mín (R$):"), sc);
         sc.gridx = 1; sc.weightx = 0.5;
@@ -440,7 +436,7 @@ public class ProdutoPanel extends JPanel {
         sc.gridx = 3; sc.weightx = 0.5;
         searchPanel.add(tfBuscaPrecoMax, sc);
 
-        // Linha 2: Código de barras + botões
+        
         sc.gridx = 0; sc.gridy = 2; sc.weightx = 0;
         searchPanel.add(UIFactory.labelLight("Cód. de Barras:"), sc);
         sc.gridx = 1; sc.weightx = 1; sc.gridwidth = 2;
@@ -459,7 +455,7 @@ public class ProdutoPanel extends JPanel {
         btnsBusca.add(btnLimpar);
         searchPanel.add(btnsBusca, sc);
 
-        // Enter nos campos dispara busca
+        
         tfBuscaNome.addActionListener(e -> executarBusca());
         tfBuscaPrecoMin.addActionListener(e -> executarBusca());
         tfBuscaPrecoMax.addActionListener(e -> executarBusca());
@@ -530,7 +526,7 @@ public class ProdutoPanel extends JPanel {
         return bar;
     }
 
-    // ── Ações ─────────────────────────────────────────────────────────────────
+    
 
     private void limpar() {
         idSelecionado = null;
@@ -662,7 +658,7 @@ public class ProdutoPanel extends JPanel {
         }
     }
 
-    // ── Busca de produtos ─────────────────────────────────────────────────────
+    
 
     private void executarBusca() {
         String nome    = tfBuscaNome.getText().trim();
@@ -705,7 +701,7 @@ public class ProdutoPanel extends JPanel {
         reloadTable();
     }
 
-    // ── Reload e preenchimento ────────────────────────────────────────────────
+    
 
     public void reloadTable() {
         tableModel.setRowCount(0);
@@ -754,7 +750,7 @@ public class ProdutoPanel extends JPanel {
         return p;
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    
 
     private JLabel sectionLabel(String text) {
         JLabel l = new JLabel(text);

@@ -8,37 +8,33 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
-/**
- * UIFactory — tema claro amarelado, elegante e de baixo cansaço visual.
- * Paleta: creme/âmbar como fundo, marrom escuro como texto, dourado como accent.
- */
 public final class UIFactory {
 
-    // ── Paleta principal (claro / amarelado / creme) ─────────────────────────
-    public static final Color W11_BG           = new Color(252, 248, 238); // creme quente
-    public static final Color W11_SURFACE      = new Color(255, 252, 244); // branco creme
-    public static final Color W11_SURFACE2     = new Color(247, 241, 226); // creme médio
-    public static final Color W11_PANEL_BG     = new Color(250, 246, 235); // painel
-    public static final Color W11_ACCENT       = new Color(160, 110,  30); // âmbar/dourado
-    public static final Color W11_ACCENT_DARK  = new Color(120,  80,  15); // dourado escuro
-    public static final Color W11_ACCENT_LIGHT = new Color(240, 220, 170); // dourado pálido
-    public static final Color W11_BORDER       = new Color(210, 195, 165); // borda suave
-    public static final Color W11_BORDER_FOCUS = new Color(160, 110,  30); // foco dourado
-    public static final Color W11_TEXT         = new Color( 55,  40,  20); // marrom escuro
-    public static final Color W11_TEXT_SEC     = new Color(130, 110,  80); // marrom médio
-    public static final Color W11_TABLE_SEL    = new Color(235, 210, 150); // seleção dourada
+    
+    public static final Color W11_BG           = new Color(252, 248, 238); 
+    public static final Color W11_SURFACE      = new Color(255, 252, 244); 
+    public static final Color W11_SURFACE2     = new Color(247, 241, 226); 
+    public static final Color W11_PANEL_BG     = new Color(250, 246, 235); 
+    public static final Color W11_ACCENT       = new Color(160, 110,  30); 
+    public static final Color W11_ACCENT_DARK  = new Color(120,  80,  15); 
+    public static final Color W11_ACCENT_LIGHT = new Color(240, 220, 170); 
+    public static final Color W11_BORDER       = new Color(210, 195, 165); 
+    public static final Color W11_BORDER_FOCUS = new Color(160, 110,  30); 
+    public static final Color W11_TEXT         = new Color( 55,  40,  20); 
+    public static final Color W11_TEXT_SEC     = new Color(130, 110,  80); 
+    public static final Color W11_TABLE_SEL    = new Color(235, 210, 150); 
     public static final Color W11_TABLE_SEL_FG = new Color( 55,  40,  20);
-    public static final Color W11_BTN_BG       = new Color(242, 234, 210); // botão creme
-    public static final Color W11_BTN_HOVER    = new Color(230, 215, 175); // hover dourado
-    public static final Color W11_BTN_PRESS    = new Color(215, 195, 145); // press
-    public static final Color W11_MENU_BG      = new Color( 48,  36,  18); // menu escuro quente
+    public static final Color W11_BTN_BG       = new Color(242, 234, 210); 
+    public static final Color W11_BTN_HOVER    = new Color(230, 215, 175); 
+    public static final Color W11_BTN_PRESS    = new Color(215, 195, 145); 
+    public static final Color W11_MENU_BG      = new Color( 48,  36,  18); 
     public static final Color W11_MENU_BTN     = new Color( 60,  46,  24);
     public static final Color W11_MENU_HOVER   = new Color(160, 110,  30);
     public static final Color W11_SUCCESS      = new Color( 60, 140,  60);
     public static final Color W11_DANGER       = new Color(185,  50,  50);
     public static final Color W11_WARNING      = new Color(190, 130,  20);
 
-    // Aliases retrocompatíveis
+    
     public static final Color XP_BG         = W11_BG;
     public static final Color XP_PANEL_BG   = W11_PANEL_BG;
     public static final Color XP_BTN_BG     = W11_BTN_BG;
@@ -51,7 +47,7 @@ public final class UIFactory {
     public static final Color XP_MENU_BTN   = W11_MENU_BTN;
     public static final Color XP_MENU_HOVER = W11_MENU_HOVER;
 
-    // ── Tipografia ────────────────────────────────────────────────────────────
+    
     public static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN,  12);
     public static final Font FONT_BOLD   = new Font("Segoe UI", Font.BOLD,   12);
     public static final Font FONT_TITLE  = new Font("Segoe UI", Font.BOLD,   14);
@@ -60,7 +56,7 @@ public final class UIFactory {
 
     private UIFactory() {}
 
-    // ── Campos ────────────────────────────────────────────────────────────────
+    
 
     public static JTextField styledField(String text) {
         JTextField f = new JTextField(text);
@@ -116,7 +112,7 @@ public final class UIFactory {
                 BorderFactory.createEmptyBorder(3, 7, 3, 7)));
     }
 
-    // ── Labels ────────────────────────────────────────────────────────────────
+    
 
     public static JLabel labelLight(String text) {
         JLabel l = new JLabel(text);
@@ -125,7 +121,7 @@ public final class UIFactory {
         return l;
     }
 
-    // ── Botão com RIPPLE ──────────────────────────────────────────────────────
+    
 
     private static JButton rippleButton(String text,
                                         Color bgNormal, Color bgHover, Color bgPress, Color fg) {
@@ -193,7 +189,7 @@ public final class UIFactory {
         };
     }
 
-    // ── Botões públicos ───────────────────────────────────────────────────────
+    
 
     public static JButton primaryButton(String text, ActionListener action) {
         JButton b = rippleButton(text, W11_ACCENT, W11_ACCENT_DARK,
@@ -226,7 +222,7 @@ public final class UIFactory {
                 BorderFactory.createEmptyBorder(3, 12, 3, 12)));
     }
 
-    // ── Botão de menu lateral ─────────────────────────────────────────────────
+    
 
     public static JButton bigMenuButton(String text, ActionListener action) {
         JButton b = new JButton(text) {
@@ -268,7 +264,7 @@ public final class UIFactory {
         return b;
     }
 
-    // ── Botão de TopBar ───────────────────────────────────────────────────────
+    
 
     public static JButton topNavButton(String text, ActionListener action) {
         JButton b = new JButton(text) {
@@ -326,7 +322,7 @@ public final class UIFactory {
         return b;
     }
 
-    // ── Tabela ────────────────────────────────────────────────────────────────
+    
 
     public static JTable styledTable() {
         JTable t = new JTable();
@@ -357,7 +353,7 @@ public final class UIFactory {
         return t;
     }
 
-    // ── Bordas / painéis ──────────────────────────────────────────────────────
+    
 
     public static Border groupBorder(String title) {
         return BorderFactory.createTitledBorder(
@@ -404,15 +400,15 @@ public final class UIFactory {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                // Sombra suave
+                
                 g2.setColor(new Color(180, 150, 80, 40));
                 g2.fill(new RoundRectangle2D.Float(3, 5, getWidth()-4, getHeight()-4, 14, 14));
-                // Fundo do card
+                
                 Color c1 = interpolate(W11_SURFACE, new Color(255, 245, 215), hov);
                 Color c2 = interpolate(W11_SURFACE2, new Color(245, 230, 185), hov);
                 g2.setPaint(new GradientPaint(0, 0, c1, 0, getHeight(), c2));
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth()-2, getHeight()-2, 14, 14));
-                // Borda
+                
                 Color border = interpolate(W11_BORDER, W11_ACCENT, hov * 0.7f);
                 g2.setColor(border);
                 g2.setStroke(new BasicStroke(1.5f));
@@ -431,7 +427,7 @@ public final class UIFactory {
         return card;
     }
 
-    // ── Utilitários ───────────────────────────────────────────────────────────
+    
 
     public static void enterActsAsTab(JComponent c) {
         c.addKeyListener(new KeyAdapter() {

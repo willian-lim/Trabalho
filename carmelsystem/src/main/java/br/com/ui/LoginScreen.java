@@ -189,7 +189,7 @@ public class LoginScreen extends JFrame {
         }
     }
 
-    // ── Diálogo: Licença ──────────────────────────────────────────────────────
+    
 
     private void dlgLicenca() {
         ResultadoLicenca r = LicencaManager.verificar();
@@ -200,7 +200,7 @@ public class LoginScreen extends JFrame {
         dlg.setLocationRelativeTo(this);
         dlg.setLayout(new BorderLayout());
 
-        // Cabeçalho colorido por status
+        
         Color corHeader = switch (r.status()) {
             case VALIDA                                    -> new Color(20, 100, 40);
             case SEM_LICENCA, EXPIRADA, CHAVE_JA_UTILIZADA -> new Color(160, 30, 30);
@@ -231,13 +231,13 @@ public class LoginScreen extends JFrame {
         headerDlg.add(lblTitulo);
         dlg.add(headerDlg, BorderLayout.NORTH);
 
-        // Corpo com informações
+        
         JPanel corpo = new JPanel(new GridBagLayout());
         corpo.setBackground(new Color(28, 28, 38));
         corpo.setBorder(new EmptyBorder(16, 20, 8, 20));
         GridBagConstraints c = gbc();
 
-        // ← CORREÇÃO: dataInstalacao() → dataInicio()
+        
         String dataInst = r.dataInicio() != null ? r.dataInicio().format(FMT_BR) : "-";
         String dataExp  = r.dataInicio() != null
                 ? r.dataInicio().plusDays(LicencaManager.DIAS_VALIDADE).format(FMT_BR) : "-";
@@ -275,7 +275,7 @@ public class LoginScreen extends JFrame {
 
         dlg.add(corpo, BorderLayout.CENTER);
 
-        // Botões
+        
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
         btns.setBackground(new Color(22, 22, 30));
 
@@ -292,7 +292,7 @@ public class LoginScreen extends JFrame {
             }
             try {
                 if (LicencaManager.renovar(chave)) {
-                    // ← CORREÇÃO: dataInstalacao() → dataInicio()
+                    
                     String novaExp = LicencaManager.verificar().dataInicio()
                             .plusDays(LicencaManager.DIAS_VALIDADE).format(FMT_BR);
                     JOptionPane.showMessageDialog(dlg,
@@ -339,7 +339,7 @@ public class LoginScreen extends JFrame {
         p.add(val, c);
     }
 
-    // ── Diálogo: Cadastrar Usuário ────────────────────────────────────────────
+    
 
     private void dlgCadastrarUsuario() {
         JDialog dlg = new JDialog(this, "Novo Usuário", true);
@@ -509,7 +509,7 @@ public class LoginScreen extends JFrame {
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    
 
     private GridBagConstraints gbc() {
         GridBagConstraints c = new GridBagConstraints();

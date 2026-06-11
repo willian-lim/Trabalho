@@ -10,11 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Regras de negócio do Caixa.
- * O caixa é identificado por um número sequencial (numeroCaixa),
- * independente de data ou turno.
- */
 public class CaixaService {
 
     private final CaixaRepository repo;
@@ -23,12 +18,12 @@ public class CaixaService {
         this.repo = new CaixaRepository(emf);
     }
 
-    // ── Estado do caixa ───────────────────────────────────────────────────────
+    
 
     public static class EstadoCaixa {
         public boolean aberto;
         public boolean algumFechamento;
-        public Long    numeroCaixa;          // número do caixa atual (aberto ou último fechado)
+        public Long    numeroCaixa;          
         public BigDecimal saldoAtual      = BigDecimal.ZERO;
         public BigDecimal aberturaAtual   = BigDecimal.ZERO;
         public BigDecimal sangriasAtual   = BigDecimal.ZERO;
@@ -39,11 +34,11 @@ public class CaixaService {
     public EstadoCaixa calcularEstado() {
         EstadoCaixa estado = new EstadoCaixa();
 
-        // Verifica se há um caixa aberto (sem fechamento)
+        
         Long numAberto = repo.buscarNumeroCaixaAberto();
 
         if (numAberto != null) {
-            // Caixa aberto — carrega seus movimentos
+            
             estado.aberto      = true;
             estado.numeroCaixa = numAberto;
             List<CaixaMovimento> movimentos = repo.buscarMovimentosPorNumero(numAberto);
@@ -67,16 +62,16 @@ public class CaixaService {
                 estado.saldoAtual = estado.aberturaAtual
                         .add(vendas)
                         .add(estado.suprimentoAtual)
-                        .add(estado.sangriasAtual); // sangrias já são negativas
+                        .add(estado.sangriasAtual); 
             }
         } else {
-            // Sem caixa aberto — verifica se já houve algum fechamento
+            
             List<Long> fechados = repo.buscarNumerosCaixaFechados();
             if (!fechados.isEmpty()) {
                 estado.algumFechamento = true;
-                estado.numeroCaixa     = fechados.get(0); // último fechado
+                estado.numeroCaixa     = fechados.get(0); 
 
-                // Calcula saldo do último caixa fechado (para exibição no painel)
+                
                 List<CaixaMovimento> movsFechado = repo.buscarMovimentosPorNumero(estado.numeroCaixa);
                 LocalDateTime horaFech = null;
                 for (CaixaMovimento m : movsFechado) {
@@ -107,7 +102,7 @@ public class CaixaService {
         return estado;
     }
 
-    // ── Operações ─────────────────────────────────────────────────────────────
+    
 
     public void abrirCaixa(BigDecimal valorInicial) {
         if (valorInicial == null || valorInicial.compareTo(BigDecimal.ZERO) < 0)
@@ -146,7 +141,7 @@ public class CaixaService {
                 estado.numeroCaixa, estado.saldoAtual, valorInformado, diferenca, statusStr));
         repo.registrar(mov);
 
-        return diferenca; // positivo = sobrou, negativo = faltou
+        return diferenca; 
     }
 
     public void registrarSangria(BigDecimal valor, String descricao) {
@@ -186,7 +181,7 @@ public class CaixaService {
 
     public void registrarVenda(Pagamento pagamento) {
         EstadoCaixa estado = calcularEstado();
-        if (!estado.aberto) return; // venda já foi validada antes
+        if (!estado.aberto) return; 
 
         CaixaMovimento mov = new CaixaMovimento();
         mov.setNumeroCaixa(estado.numeroCaixa);
@@ -198,7 +193,7 @@ public class CaixaService {
         repo.registrar(mov);
     }
 
-    // ── Consultas ─────────────────────────────────────────────────────────────
+    
 
     public List<CaixaMovimento> buscarMovimentosPorNumero(Long numeroCaixa) {
         return repo.buscarMovimentosPorNumero(numeroCaixa);
@@ -212,7 +207,7 @@ public class CaixaService {
         return repo.buscarTotalVendasPorPeriodo(inicio, fim);
     }
 
-    // ── Compat. legado (RelatorioService) ────────────────────────────────────
+    
 
     public List<CaixaMovimento> buscarMovimentosDia(LocalDate data) {
         return repo.buscarMovimentosDia(data);
